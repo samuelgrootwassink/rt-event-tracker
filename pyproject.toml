@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "real-time event tracker"
+version = "0.1.0"
+description = "A web application with the goal of helping anyone interested (news enthusiasts, journalists, researchers) to track the development of world events live through twitter data."
+authors = ["samuelgrootwassink <sgrootwassink@gmail.com>"]
+license = "GNU GPL 3.0"
+readme = "README.md"
+packages = [{include = "real_time event tracker"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+postgresqlite = "^0.3.1"
+snscrape = "^0.5.0.20230113"
+Flask = "^2.2.2"
+Flask-SQLAlchemy = "^3.0.3"
+pandas = "^1.5.3"
+matplotlib = "^3.6.3"
+
+[tool.poetry.group.dev.dependencies]
+pgcli = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
