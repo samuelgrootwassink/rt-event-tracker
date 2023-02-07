@@ -15,7 +15,7 @@ Also using stopwords by **NLTK** instead of writing them by myself
 
 ### 06-02-2023
 
-Starting with high level concept and idea, written in CONCEPT.md
+Starting with high level concept and idea, written in [README.md](/README.md)
 Unclear what goal should be, after chat with ChatGPT clearer image. 
 
 Website with geared towards end users being researchers & journalists that aggregates and sorts tweets according to current news events.
