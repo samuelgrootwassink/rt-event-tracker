@@ -95,17 +95,17 @@ Javascript, HTML & CSS
 #### Back-end
 Python:
 
->NLTK
->- VADER -> Twitter tweets and News Outlet RSS summaries
->- Stop words -> instead of writing own take set from NLTK corpus for better results
->- NER -> Tried checking manually through RegEx, results are very inaccurate, therefore NER from NLTK may offer better results
+> - NLTK
+>	- VADER -> Twitter tweets and News Outlet RSS summaries
+>	- Stop words -> instead of writing own take set from NLTK corpus for better results
+>	- NER -> Tried checking manually through RegEx, results are very inaccurate, therefore NER from NLTK may offer better results
 >
->Wikipedia API
->XML 
->Flask
->Snscrape(Twitter)
->Pandas
->Matplotlib
+> - Wikipedia API
+> - XML 
+> - Flask
+> - Snscrape(Twitter)
+> - Pandas
+> - Matplotlib
 
 <hr/>
 
