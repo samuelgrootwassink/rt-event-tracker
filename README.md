@@ -46,7 +46,9 @@ I will use existing news outlets as a starting point from which to be able to go
 	- VADER
 12. Flask Web App
 	- Puts everything together to be able to navigate it for end users
-
+13. (optional) Email result page to user email address
+	- login form via mail or just email form?
+14. (optional) NLP Twitter for sentiment etc...
 
 
 ## Tweet Fetching Algorithm
@@ -145,7 +147,7 @@ Plan to build it as a small lib that can then be extended  if project is expande
 ```mermaid
 classDiagram
 
-class FileHandler{
+class NewsParser{
 	process_rss_feed(feed_url)
 	file_to_set(file_path)
 }
