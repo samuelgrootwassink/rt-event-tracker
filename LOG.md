@@ -41,7 +41,8 @@ New dilemma: Does the newsparser call the NER or the other way around. What will
 The only things the Entry() class needs is therefore a title and description/summary as the rest of the information will not be used. 
 Possibility to merge title and description but keeping them seperate may yield interesting information in the future.
 
-```plantuml
+```mermaid
+classDiagram 
 
 class NewsParser{
     -file_to_set(file_path:str) set
@@ -72,8 +73,8 @@ class Entry{
 }
  
 NewsParser <-- NewsAggregator
-NewsAggregator "1" -right-> "0..*" Feed : has
-Feed "1" -right-> "0..*" Entry : has
+NewsAggregator "1" --> "0..*" Feed : has
+Feed "1" --> "0..*" Entry : has
 
 ```
 > Maybe parsing of certain feeds on certain signs is better than to parse them all together changing the classes to be NewsAggregate and spliting the parsing portion as NewsParser
