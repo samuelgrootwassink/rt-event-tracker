@@ -1,6 +1,6 @@
 # Development Log
 
-### 01-02-2023
+## 01-02-2023
 
 Started working on news aggregator module with the **feedparser** module to aggregate news articles and put them through a sort of sorting algorithm.
 
@@ -13,7 +13,7 @@ Besides that I realised that recognising *named entities* by using **RegEx** and
 Also using stopwords by **NLTK** instead of writing them by myself
 
 
-### 06-02-2023
+## 06-02-2023
 
 Starting with high level concept and idea, written in [README.md](/README.md)
 Unclear what goal should be, after chat with ChatGPT clearer image. 
@@ -29,7 +29,7 @@ Making sure the rss aggregate script does not have to run needlessly
 Just read about NLTK VADER, which might be nice to use for twitter content
 
 
-### 09-02-23
+## 09-02-23
 
 To handle the news parsing module of the application I am thinking of creating a NewsParser class that handles all parsing and returning of parsed news feeds for use in NER. 
 
@@ -43,18 +43,18 @@ Possibility to merge title and description but keeping them seperate may yield i
 
 ```mermaid
 classDiagram 
+direction LR
 
 class NewsParser{
+    -feeds: set
+
     -file_to_set(file_path:str) set
     +parse_feed(url:str) dict
+    +dict_feeds() dict
     
 }
 
-class NewsAggregator{
-    -feeds: set
-    +dict_feeds() dict
 
-}
 class Feed{
     +name: str
     +url: str
@@ -71,10 +71,51 @@ class Entry{
     
     +dict_entry() dict
 }
- 
-NewsParser <-- NewsAggregator
-NewsAggregator "1" --> "0..*" Feed : has
-Feed "1" --> "0..*" Entry : has
+
+NewsParser  --> "0..*" Feed : has
+Feed  --> "0..*" Entry : has
 
 ```
 > Maybe parsing of certain feeds on certain signs is better than to parse them all together changing the classes to be NewsAggregate and spliting the parsing portion as NewsParser
+
+
+```mermaid
+classDiagram 
+direction LR
+
+class NewsParser{
+    -file_to_set(file_path:str) set
+    +parse_feed(url:str) dict
+    
+}
+
+class NewsAggregator{
+    -feeds: set
+    +dict_feeds() dict
+
+}
+
+class Feed{
+    +name: str
+    +url: str
+    -entries: set
+
+    +process_entries(entries:set)
+    +dict_entries() dict
+}
+
+
+class Entry{
+    -title
+    -description
+    
+    +dict_entry() dict
+}
+NewsParser <-- NewsAggregator
+NewsAggregator  --> "0..*" Feed : has
+Feed  --> "0..*" Entry : has
+
+```
+
+> **Side note for future reference**
+> Havent thought about accessibility, might be handy for the front en dpart, maybe too much though...
