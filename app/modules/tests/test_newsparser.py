@@ -15,9 +15,19 @@ class TestNewsParser(unittest.TestCase):
         contol_results = set('https://test1.com','http://test2.org','www.test3.tech')
         test_results = NewsParser.file_to_set('app/modules/tests/test_files/test_file_to_set.txt')
         
-        self.assertEquals(test_results, results)
+        self.assertEqual(test_results, results)
         self.assertIsInstance(test_results, set)
-        self.assertEquals(NewsParser.file_to_set('app/non_existant_file.txt'), FileNotFoundError)
+        self.assertEqual(NewsParser.file_to_set('app/non_existant_file.txt'), FileNotFoundError)
 
 
-    
+    def test_parse_feed(self):
+        
+        test_results = NewsParser
+        control_results_1 = {
+            'title':'test_1',
+            'entries':{
+                'title': 'entry_1',
+                'summary':'entry summary'
+            }
+        }
+        self.assertEqual(first, results_1)
