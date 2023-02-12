@@ -146,6 +146,7 @@ Plan to build it as a small lib that can then be extended  if project is expande
 
 ```mermaid
 classDiagram
+direction LR
 
 class NewsParser{
 	process_rss_feed(feed_url)
