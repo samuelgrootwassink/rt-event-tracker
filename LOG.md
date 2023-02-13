@@ -280,3 +280,19 @@ class NewsAggregator():
 Now starting with NER module as this will be called by the NewsAggregator() module to run through all feeds.
 
 Still not sure whether I should assig any weights to NE yet.
+
+
+## 13-02-23
+
+Started reading up more about NLTK. It would do good when creating the NER to make two variants, one being for well organized and gramatically correct text and the other being for tweets for example as the pretrained models are mostly trained on properly written english.
+
+As an alteration of the end product maybe it would do good to show the most talked about topics, (with links to news articles?) with corresponding tweets organized by sentiment (being positive or negative). If training the model is doable ofcourse, however VADER seems to be doing this exact trick, therefore not sure whether to try myself. 
+Links for reference:
+https://www.guru99.com/pos-tagging-chunking-nltk.html
+https://towardsdatascience.com/intro-to-nltk-for-nlp-with-python-87da6670dde
+https://realpython.com/python-nltk-sentiment-analysis/
+
+Model for social media posts : VADER
+Model for structured content: ?
+
+

@@ -105,9 +105,6 @@ class NewsAggregator():
         Raises:
             TypeError: Checks whether the provided argument is the correct type, namely a string
         """
-        if isinstance(file_path, str) is False:
-            raise TypeError()
-        
         rss_url_set = self._file_to_set(file_path)
         
         for rss_url in rss_url_set:
