@@ -295,5 +295,33 @@ https://realpython.com/python-nltk-sentiment-analysis/
 Model for social media posts : VADER
 Model for structured content: ?
 
+In order to create the NER module I wish to create a class which has certain methods to be used by other modules. First off I wish to create a differentiation between the handling of structured text and social media text.
+Below a graph detailing the struture of the class: 
 
 
+```mermaid
+graph LR
+
+N(NER)
+S(Structured text)
+U(Unstructured text)
+
+NE(Named Entities)
+SE(Sentiment)
+
+
+N --> S
+N --> U
+S --> NE
+U --> NE
+U --> SE
+```
+
+Usecase will be implementing this class in for example the newsparser module to extract named entities that can then be used for further processing.
+
+How do I want to store the processed text, as a 
+- Text formatting to remove punctuation and stopwords.
+-
+
+
+https://pythonprogramming.net/chunking-nltk-tutorial/

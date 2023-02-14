@@ -1,4 +1,4 @@
-import requests, re, validators
+import requests, re
 import xml.etree.ElementTree as ET
 
 ERROR_PARSING = 'The parser was unable to succesfully parse the feed or the feed was incomplete'
@@ -37,6 +37,25 @@ class NewsAggregator():
         return set_of_file
     
     
+    def _is_url(self, string: str):
+        """
+        Checks wether a string is a url
+        Very barebones, only checks if contains:
+        http
+        https
+
+        Args:
+            string (str): Provide a string and check wether it is a url
+
+        Returns:
+            bool: Whether it is found to be a url
+        """
+        for prefix in ['http://', 'https://']:
+            if prefix in string:
+                return True
+            
+        return False
+    
     def _html_strip(self, content:str):
         """
         Strip all HTML tags through RegEx, not sanitized.
@@ -69,7 +88,7 @@ class NewsAggregator():
             dict: Dictionary containing information regarding the feed and its items
         """
 
-        if validators.url(rss_url) is True:
+        if self._is_url(rss_url) is True:
             content = requests.get(rss_url).content
             xml_feed = ET.fromstring(content)
         else:
