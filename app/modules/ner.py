@@ -58,11 +58,3 @@ class NER():
             named_entities.add(named_entity)
 
         return named_entities
-
-# text = "NASA awarded Elon Musk’s SpaceX a $2.9 billion contract to build the lunar lander."
-# tokens = word_tokenize(text)
-# tag=pos_tag(tokens)
-# print(tag)
-
-# ne_tree = nltk.ne_chunk(tag)
-# print(ne_tree)
