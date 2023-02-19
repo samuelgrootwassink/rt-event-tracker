@@ -324,4 +324,76 @@ How do I want to store the processed text, as a
 -
 
 
+
+## 13-02-23
+
+Experimented with the NLTK chunking and NER, noticed that by removing all stop words before determining NE it results in undesirable results.
+
+Namely in this case:
+
+```
+without_stopword_removal = 'Troops blew up the bridge on Monday, according to a local Donetsk region news site. Ukraine denies it intends to leave Bakhmut, despite six months of heavy fighting and reportedly dwindling stockpiles.'
+results = {'Donetsk', 'Bakhmut', 'Troops', 'Ukraine'}
+
+with_stopword_removal = 'Troops blew bridge Monday , according local Donetsk region news site . Ukraine denies intends leave Bakhmut , despite six months heavy fighting reportedly dwindling stockpiles .'
+results = {'Donetsk', 'Bakhmut', 'Troops'}
+
+def named_entities(self, string:str):
+    """
+    Uses NLTK Part of Speech tagging and chunking to determine Named Entities in a string for further use.
+
+    Args:
+        string (str): The string to take a apart
+
+    Returns:
+        set: A set containing all recognized named entities
+    """
+    tokenized_string = word_tokenize(self.remove_stopwords(string))
+    tagged_string =  pos_tag(tokenized_string)
+    ne_tree = nltk.ne_chunk(tagged_string, binary=True)
+    print(ne_tree)
+    named_entities = set()
+    
+    for ne in ne_tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
+        named_entity = ' '.join([word[0] for word in ne])
+        named_entities.add(named_entity)
+
+    return named_entities
+
+```
+
+The results show that with removal of stopwords the name Ukraine is no longer identified as a NE, whilst being quite crucial in the context of the string.
+
+Therefore I am considering doing NE without removal of stopwords, firstly for the above stated reason with a side note that most handled text will not be longer than 2-3 Sentences making it doable
+
+Maybe the error has been that I pull entire pieces of text through the method instead of a single sentence. First need to test out
+https://nlp.stanford.edu/software/crf-faq.shtml#a
 https://pythonprogramming.net/chunking-nltk-tutorial/
+
+```
+text_list = sent_tokenize(self.remove_stopwords(string))
+# Continue here, change post_tag to post_tag_sents
+# tokenized_string = word_tokenize()
+tagged_string =  post_tag_sents(text_list)
+ne_tree = nltk.ne_chunk(tagged_string, binary=True)
+print(ne_tree)
+named_entities = set()
+```
+
+## 19-02-2023
+
+First experiment with retrieving named entities from the guardian/international rss feed:
+https://www.theguardian.com/international/rss
+
+<details>
+<summary> 
+Set of NE retrieved
+</summary>
+{'Wang Yi', 'Toronto', 'Nosheen Iqbal', 'Paul Smith', 'Status Quo', 'Qatar', 'Ravi Jadeja Ravichandran Ashwin', 'Sasha', 'International Ski Snowboard Federation', 'Vital', 'Emmanuel Macron', 'Environmental Protection Agency', 'masksHow', 'Mahsa Amini', 'Proteo', 'Continue', 'Washington Post', 'Ovsyannikova', 'Consumption', 'Welcome Avoriaz', 'Jenny Slate', 'Peak District', 'Test Delhi', 'opportunityDivision', 'Arizona', 'exercisesNorth Korea', 'France', 'PRC', 'Brendon', 'Black Sea', 'Republican', 'Vladimir', 'Vermeer', 'Ghana', 'Half', 'Soave Orvieto', 'Alpine', 'London', 'Marcel Shell Shoes', 'Andrey', 'Italian Madrid', 'Tehran', 'Twelve', 'Modi', 'Cypriot', 'Discovery', 'Picture', 'Tarzan', 'Hezbollah', 'Ohio', 'London US', 'incidentAntony Blinken', 'Deborah Dorbert', 'Goalkeeper', 'Europe', 'updatesThe', 'Tom Symonds', 'Damascus', 'Athens', 'Fifa', 'Consumption France', 'Belarussian', 'StreetThe', 'Nigerian', 'Ukraine Middle Eastern African', 'UK', 'Ukrainian', 'Jiaxi', 'squanderWhen Nicola Sturgeon', 'Knesset Jerusalem', 'Joe Biden', 'familyThe', 'Munich', 'MatildasAustralia', 'enchantingAt Baftas', 'Rihanna Super Bowl', 'Istanbul', 'Covid', 'Heinali', 'Waitrose', 'Gavron', 'Norfolk', 'Patrick Stewart', 'ageFrance', 'Australian', 'Oscars', 'Marist College Canberra', 'Mexican', 'Castel', 'Antony Blinken', 'Bute House Edinburgh', 'DNA', 'Sheffield', 'Marina Ovsyannikova', 'British Academy', 'Hyundai Nexo', 'Bond', 'Iran International', 'Sleaford Mods', 'Optical Delusion', 'German', 'Echoes Times', 'Welsh', 'Van Gogh Frida Kahlo', 'Bafta', 'Data Goonies', 'Mike', 'Phil Paul Hartnoll', 'Shpudeiko', 'Turkish', 'Sam Patten', 'Carlo Ancelotti', 'Buhari', 'Liverpool', 'Kentucky', 'Bukky Bakray', 'Light', 'Tippett', 'Frascati', 'worldAs', 'Norway', 'Paris', 'themFollow', 'Mum', 'failuresUefa', 'Max Robertson', 'Cyclone Gabrielle New Zealand', 'Short', 'Food Monthly', 'South Africa', 'North Island', 'MPs', 'Legislation', 'Kyiv', 'Buckinghamshire', 'BBC Turkish', 'Jamie Demetriou', 'Russian', 'Nick Pope', 'Alun Wyn Jones', 'AKA Ukrainian', 'America', 'Moscow Nato', 'Syria', 'Anfield', 'Experience', 'Paolis Frascati', 'Parramatta', 'Louisville', 'Pyongyang', 'Libyan', 'BBC', 'Oscar', 'Champions League', 'Madrid', 'Uefa', 'Les Républicains', 'Carter Center', 'Spaniard', 'North Korea', 'Demetriou', 'Etonian', 'Six Nations', 'Romania', 'Liverpool St James', 'Shakin', 'Moscow', 'Waymond Wang Everything', 'wagesWarren Gatland', 'Ancelotti', 'explainsThe', 'Brother Jerome Hickman', 'Chris', 'Scotland', 'Sarah Gavron', 'Soviet', 'Fragile', 'Daniel Tulloch', 'Hawke', 'Lenin', 'Rafa Benítez', 'Enjoy', 'Tristan', 'Bavaria', 'Ringa', 'Bordeaux', 'Footballer Christian Atsu', 'Mohamed Salah', 'Nana Connie', 'Ingrid Fosse Sæthre', 'Sturgeon', 'Brittany Kaiser', 'Chris Hipkins', 'Narendra Modi', 'Stath', 'Dean', 'Vucic', 'Sunak', 'Benjamin Netanyahu', 'Australia', 'Italy', 'Iran Mahsa Amini', 'British', 'Omayyad', 'SNP', 'BordersMarina Ovsyannikova', 'Missouri', 'Composer Ricky Kej', 'David Smith', 'Newcastle', 'Boris Johnson', 'warRussia', 'Soleil', 'Ole House', 'Kamala Harris', 'Death', 'Kyiv Eternal', 'Germany', 'Indiana', 'devicesPurism', 'scientistThe', 'Welcome Country', 'Northland', 'Please', 'Scottish National', 'Scottish', 'AdıyamanAmid', 'Home', 'canBritish', 'Dunbar', 'East Palestine', 'BJP', 'China', 'European', 'Stephen Hough', 'EURishi Sunak', 'Paolis Frascati Superiore DOCG', 'Brexit', 'Zelensky', 'Hundreds', 'Northern Ireland', 'podcastFor', 'Israel', 'Shouts', 'US', 'Airbnb', 'Catholic', 'Avoriaz', 'Mardi Gras Fair', 'Truth Women', 'economyThe', 'Syria Turkey', 'Portes', 'ChatGPT', 'FIS', 'Orbital', 'Sue', 'Jamaican', 'Earth', 'Tolaga Bay', 'Harris', 'Chinese', 'David Hockney', 'Nigeria', 'India', 'Upper East', 'Better', 'Muriel Box', 'Charles', 'Lake Garda', 'IMF', 'TikTok', 'Macron', 'Mustafa Avci', 'Asian', 'saysJimmy Carter', 'Former', 'militantsAn Israeli', 'Michael Regan', 'Carabao Cup', 'New Zealand', 'Mariko Klug', 'Tesco Finest Soave Classico Superiore', 'ecDNA', 'Benball', 'Santarelli', 'Solkiki', 'James Cook', 'French', 'Putin', 'Harriet Harman', 'New York', 'Brazil', 'waterItaly', 'American', 'updatesAs', 'Turkey', 'Nick', 'Sydney', 'MorningRoutine', 'Debussy', 'Kiwi', 'Lamar Johnson', 'Volodymyr Zelenskiy', 'Bakhmut', 'updatesJoe Biden', 'illnessIn', 'Cher Yam Tian', 'Phobias', 'Cyclone Gabrielle', 'Radio', 'Alex Moshakis', 'Alexander Nix', 'lieLive', 'Cook', 'Caleb Blair', 'Guillermo', 'Dirty Rat', 'Muslims', 'Marcel', 'Florida', 'England', 'Observer', 'Mediaeval Baebes', 'Labour', 'Blinken', 'Aurélien Pradié', 'Spain', 'Vikram Dodd', 'Jami Cozza', 'Hough', 'Benítez', 'Nicola Sturgeon', 'South Korea', 'Anna', 'Born Cardiff', 'Indoor Built', 'Mitch McConnell', 'Toro', 'Green Door Merry Christmas Everyone', 'Olia Hercules', 'JohnsonThe', 'Jawaharlal Nehru University', 'moreDon', 'himThe', 'emailI', 'Nepali', 'Kanchan Gupta', 'custodyWe', 'France Continue', 'MargateAn', 'Norfolk Southern', 'Bulgaria', 'Dean Fleischer Camp Jenny Slate', 'Johnson', 'Londoner Bafta', 'Natasia', 'Kafr Sousa', 'Afraid', 'Harrison Ford', 'Whole Lifetime Jamie Demetriou', 'Severin Carrell', 'England Cardiff', 'Karan Rai', 'affectedCyclone Gabrielle', 'Poland', 'Sign', 'Dean Fleischer Camp', 'Tash', 'Israeli', 'Rachid', 'Passionate Stranger', 'Adıyaman', 'Joe Root', 'EnglandHave', 'McCullum', 'Shakespeare', 'Ben Stokes', 'Lucy Pardee', 'Veteran', 'Auckland Coromandel', 'Andrew Tate', 'Banksy', 'Gabrielle New Zealand', 'Senate', 'Italian', 'Syrian', 'Iranian', 'Guardian', 'Iran', 'DeWine', 'Stath Lets Flats', 'cerealGet', 'Tal Hanan', 'Phoenix', 'Rachel Signer', 'Arab', 'Russia', 'EU', 'Gujarat', 'South Carolina', 'updatesGet', 'NHS', 'Regan', 'Vladimir Putin', 'Moon Princess', 'Qatari', 'Guardian Australia', 'Bakray', 'Mihir Shukla', 'English Test', 'Netflix', 'Britain', 'Ofsted', 'Ukraine', 'Federico Mompou', 'Madrid Champions League', 'France Switzerland', 'Japanese', 'Kherson', 'Google', 'Klaveness', 'Ukraine Continue'}
+</details>
+
+
+
+The results clearly show that there *needs* to be a lot of finetuning, starting with maybe weighting the retrieved NE and seeing if there is a way to filter *faulty* NE or whether this is not needed as they will not appear on top when weighted.
+
+Lot to consider and for accuracy a failsafe would be appropriate to remove incorrect NE

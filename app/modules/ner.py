@@ -1,20 +1,27 @@
 import nltk, re
 from nltk.corpus import stopwords
-from nltk import word_tokenize, pos_tag
+from nltk.tag import pos_tag, pos_tag_sents
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 nltk.data.path.append('../NLTK_DATA')
-nltk.download(['stopwords', 
-               'vader_lexicon', 
-               'punkt', 
-               'averaged_perceptron_tagger',
-               'maxent_ne_chunker', 
-               'words'], 
-              download_dir='../NLTK_DATA')
+# nltk.download(['stopwords', 
+#                'vader_lexicon', 
+#                'punkt', 
+#                'averaged_perceptron_tagger',
+#                'maxent_ne_chunker', 
+#                'words'], 
+#               download_dir='../NLTK_DATA')
 
 
 class NER():
     
-    def _remove_stopwords(self, string:str):
+    
+    def __init__(self):
+        
+        self.__english_stopwords = set(stopwords.words('english'))
+        
+        
+    def remove_stopwords(self, sentence:str):
         """
         Tries to remove all stopwords with the help of the nltk.corpus stopwords.
 
@@ -24,21 +31,21 @@ class NER():
         Returns:
             str: The stripped string 
         """
-        if isinstance(string, str) is False:
+        if isinstance(sentence, str) is False:
             raise TypeError
         
-        english_stopwords = set(stopwords.words('english'))
+        english_stopwords = self.__english_stopwords
         word_list = []
-        tokenized_string =  word_tokenize(string)
-        for word in tokenized_string:
+        tokenized_sentence =  word_tokenize(sentence)
+        for word in tokenized_sentence:
             if word.lower() in english_stopwords:
                 continue
             word_list.append(word)
-        stripped_text = ' '.join(word_list)
-        return stripped_text            
+ 
+        return ' '.join(word_list)            
 
     
-    def named_entities(self, string:str):
+    def named_entities(self, sentences:str):
         """
         Uses NLTK Part of Speech tagging and chunking to determine Named Entities in a string for further use.
 
@@ -48,13 +55,17 @@ class NER():
         Returns:
             set: A set containing all recognized named entities
         """
-        tokenized_string = word_tokenize(string)
-        tagged_string =  pos_tag(tokenized_string)
-        ne_tree = nltk.ne_chunk(tagged_string, binary=True)
-        named_entities = set()
         
-        for ne in ne_tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
-            named_entity = ' '.join([word[0] for word in ne])
-            named_entities.add(named_entity)
-
+        sentence_list = sent_tokenize(sentences)
+        cleaned_sentences = [ self.remove_stopwords(sentence) for sentence in sentence_list]
+        tokenized_sentence_list = [word_tokenize(sent) for sent in cleaned_sentences]
+        tagged_sentence_list =  pos_tag_sents(tokenized_sentence_list)
+        
+        named_entities = set()
+        for sent in tagged_sentence_list:
+            tree = nltk.ne_chunk(sent, binary=True)
+            for ne in tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
+                named_entity = ' '.join([word[0] for word in ne])
+                named_entities.add(named_entity)
+                
         return named_entities

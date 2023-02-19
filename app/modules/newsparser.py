@@ -1,12 +1,15 @@
 import requests, re
 import xml.etree.ElementTree as ET
+import modules.ner as ner
 
 ERROR_PARSING = 'The parser was unable to succesfully parse the feed or the feed was incomplete'
+DEFAULT_PATH = 'modules/files/news_feeds.txt'
 
 class NewsAggregator():
     
     def __init__(self):
         self._feeds = []
+        self._ner = ner.NER()
     
     
     def _file_to_set(self, file_path:str):
@@ -113,8 +116,18 @@ class NewsAggregator():
             raise Exception(ERROR_PARSING)
         return feed_dict
         
+    @property
+    def named_entities(self):
+        
+        named_entity_set = set()
+        for feed in self._feeds:
+            for entry in feed['items']:
+                ne_set = self._ner.named_entities(entry['summary'])
+                named_entity_set = named_entity_set | ne_set
+        return named_entity_set
+            
        
-    def aggregate(self, file_path:str):
+    def aggregate(self, file_path:str = DEFAULT_PATH):
         """
         Aggregates all feeds and saves them in list of feeeds. 
 
@@ -125,12 +138,10 @@ class NewsAggregator():
             TypeError: Checks whether the provided argument is the correct type, namely a string
         """
         rss_url_set = self._file_to_set(file_path)
-        
         for rss_url in rss_url_set:
             feed = self._parse_feed(rss_url)
             self._feeds.append(feed)
         
     
-
-        
+    
         
