@@ -5,10 +5,14 @@ import modules.ner as ner
 ERROR_PARSING = 'The parser was unable to succesfully parse the feed or the feed was incomplete'
 DEFAULT_PATH = 'modules/files/news_feeds.txt'
 
+
+class Item():
+    
+    
 class NewsAggregator():
     
     def __init__(self):
-        self._feeds = []
+        self._feeds = {}
         self._ner = ner.NER()
     
     
@@ -69,10 +73,16 @@ class NewsAggregator():
         Returns:
             str: Stripped version of content that is returned
         """
-        pattern = r'<[^>]+>'
+        pattern = r'<[^<]+?>'
         html_stripped_content = re.sub(pattern, '', content)
         return html_stripped_content
     
+    
+    def _clean(self, content):
+        
+        html_stripped = self._html_strip(content)
+        
+        return html_stripped
     
     def _parse_feed(self, rss_url:str):
         """
@@ -97,16 +107,17 @@ class NewsAggregator():
         else:
              xml_feed = ET.parse(rss_url)
         tree = ET.ElementTree(xml_feed)
-        root = tree.find('channel')
-        feed_dict = dict()
-        feed_dict['title'] = root.find('title').text
-        feed_dict['lang'] = root.find('language').text
-        feed_dict['items'] = []        
-        items = root.findall('item')
+        root = tree.getroot()
+        # working here, checking how to handle different types of rss feeds, check guardian and deutche welle
+        title = root.find('channel/title').text
+        lang = root.find('language').text
+        
+        feed = Feed(title, lang)  
+        items = root.findall('channel/item')
         for item in items:
             title = item.find('title').text.strip()
             summary = "".join(item.find('description').itertext()).strip()
-            html_stripped_summary = self._html_strip(summary)
+            html_stripped_summary = self._clean(summary)
             item_dict = {'title': title, 
                          'summary': html_stripped_summary
                          }
@@ -118,13 +129,24 @@ class NewsAggregator():
         
     @property
     def named_entities(self):
-        
-        named_entity_set = set()
+        """
+        Retrives named entities from all feed items that are stored within the NewsAggregator() instance
+
+        Returns:
+            set: All encountered named entities
+        """
+        # change set into list and apply common entities method to return the most popular entities for further manipulation?
+        named_entity_list = []
         for feed in self._feeds:
             for entry in feed['items']:
+                
                 ne_set = self._ner.named_entities(entry['summary'])
-                named_entity_set = named_entity_set | ne_set
-        return named_entity_set
+                print(1, ne_set)
+                named_entity_list += ne_set
+                
+        common_entities = self._ner.common_entities(named_entity_list)
+        
+        return common_entities
             
        
     def aggregate(self, file_path:str = DEFAULT_PATH):
@@ -145,3 +167,6 @@ class NewsAggregator():
     
     
         
+class Feed():
+    
+    pass
