@@ -429,3 +429,39 @@ Results gathered by above method on the Guardian/International feed:
 The results clearly show that there *needs* to be a lot of finetuning, starting with maybe weighting the retrieved NE and seeing if there is a way to filter *faulty* NE or whether this is not needed as they will not appear on top when weighted.
 
 Lot to consider and for accuracy a failsafe would be appropriate to remove incorrect NE
+
+NLTK offers FreqDist for the weighting ot NE but since what I will need is not a lot of added functionality I rather add my own method the NER class than import FreqDist
+
+Encountered a problem, where to place a frequency destribution check
+
+By adding a custom frequency check this is the following result:
+
+```
+>> in
+def common_entities(self, named_entities, amount: int = 10):
+        
+    ne_dict = dict()
+    for entity in named_entities:
+        ne_dict[entity] = ne_dict.get(entity, 0) + 1
+    
+    common_entities = sorted(ne_dict, key = lambda key: ne_dict.get(key), reverse=True)
+    
+    return common_entities[:amount]
+
+
+>> out
+['Continue', 'Russian', 'London', 'Guardian', 'US', 'Ukraine', 'Labour', 'Vladimir Putin', 'updatesThe', 'EU']
+```
+
+What now seems to be the issue is that certain unimportant words are included, therefore recognizing named entities needs to be corrected, maybe by changing the model or corpus or narrowing criteria.
+
+The stripping of rss feed tet needs to be more thorough and thaught about. Although the results match up with what I am seeing on the guardian/international feed the amount of incorrect words is still mor the I like to admit. I think this has to do with how I parse feeds.
+
+The Guardian feeds features a lot of the word 'Guardian':p
+
+
+## 20-02-2023
+
+Refactor of the newsparser module, to decrease complexity of the module I will add another class called Item(),
+This way every item parsed from rss feeds gets it own objects with its own methods to determine relations and NE.
+The inclusion of a Feed() object to relate their origin will also be included to weigh the amount of items produced by each feed.

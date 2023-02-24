@@ -44,6 +44,15 @@ class NER():
  
         return ' '.join(word_list)            
 
+    def common_entities(self, named_entities, amount: int = 10):
+        
+        ne_dict = dict()
+        for entity in named_entities:
+            ne_dict[entity] = ne_dict.get(entity, 0) + 1
+        
+        common_entities = sorted(ne_dict, key = lambda key: ne_dict.get(key), reverse=True)
+        
+        return common_entities[:amount]
     
     def named_entities(self, sentences:str):
         """
@@ -61,11 +70,12 @@ class NER():
         tokenized_sentence_list = [word_tokenize(sent) for sent in cleaned_sentences]
         tagged_sentence_list =  pos_tag_sents(tokenized_sentence_list)
         
-        named_entities = set()
+        ne_set = set()
         for sent in tagged_sentence_list:
-            tree = nltk.ne_chunk(sent, binary=True)
-            for ne in tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
+            tree = nltk.ne_chunk(sent, binary=False)
+            print(tree)
+            for ne in tree.subtrees(filter= lambda ne: ne.label() in {'GPE', 'PERSON', 'FAC'}):
                 named_entity = ' '.join([word[0] for word in ne])
-                named_entities.add(named_entity)
-                
-        return named_entities
+                ne_set.add(named_entity)
+        
+        return ne_set
