@@ -27,11 +27,10 @@ class TestNewsAggregator(unittest.TestCase):
         """
         Checks whether feeds are parsed correctly and raise errors when needed
         """
-        ne = NewsAggregator()
-        ne._generate_feed('tests/test_files/test_parse_feed.xml')
-        test_results = ne.to_dict()
+        feed = NewsAggregator()._generate_feed('tests/test_files/test_parse_feed.xml')
+        test_results = feed.to_dict()
         
-        control_results_1 = [{
+        control_results_1 = {
             'title':'test',
             'language': 'en',
             'items':[
@@ -44,15 +43,15 @@ class TestNewsAggregator(unittest.TestCase):
                     'description':'summary of test'
                 }
             ]
-        }]
+        }
         self.assertEqual(test_results, control_results_1)
-        self.assertIsInstance(test_results, list)
+        self.assertIsInstance(test_results, dict)
         
         with self.assertRaises(FileNotFoundError):
-            NewsAggregator()._parse_feed('app/not_existing.xml')
+            NewsAggregator()._generate_feed('app/not_existing.xml')
         
         with self.assertRaises(Exception):
-            NewsAggregator()._parse_feed('tests/test_files/test_parse_feed_unsuccesful.xml')
+            NewsAggregator()._generate_feed('tests/test_files/test_parse_feed_unsuccesful.xml')
             
     
     # def test_aggregate(self):

@@ -254,10 +254,10 @@ class NewsAggregator():
 
         if self._is_url(rss_url) is True:
             content = requests.get(rss_url).content
-            xml_feed = ET.fromstring(content)
+            tree = ET.fromstring(content)
         else:
-             xml_feed = ET.parse(rss_url)
-        tree = ET.ElementTree(xml_feed)
+             tree = ET.parse(rss_url)
+             
         root = tree.getroot()
         
         feed = dict()
@@ -266,10 +266,8 @@ class NewsAggregator():
         else:
             #assuming that else the feed is a rss feed
             feed = self._parse_rss(tree, root)
-
         if feed.title is None or feed.items == []:
             raise Exception(ERROR_PARSING)
-        
         return feed
 
 
@@ -289,9 +287,9 @@ class NewsAggregator():
                 ne_set = self._ner.named_entities(f'{item.title}. {item.description}')
                 named_entity_list.append(ne_set)
                 print(ne_set)
-        common_entities = self._ner.common_entity_sets(named_entity_list)
+        # common_entities = self._ner.common_entity_sets(named_entity_list)
         
-        return common_entities
+        # return common_entities
             
        
     def aggregate(self, file_path:str = DEFAULT_PATH):
