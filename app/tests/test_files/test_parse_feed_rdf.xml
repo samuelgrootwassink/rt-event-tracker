@@ -1,0 +1,16 @@
+<?xml version="2.0"?>
+<rdf xmlns="http://purl.org/rss/1.0/">
+<channel>
+  <title>test</title>
+  <description>summary of feed</description>
+  <language>en</language>
+</channel>
+<item>
+  <title>test_1</title>
+  <description><h1>summary</h1> of test <img src="https://test.com/img.png"/></description>
+</item>
+<item>
+  <title>test_2</title>
+  <description>summary of <a href="http://test123.com">test</a></description>
+</item>
+</rdf> 

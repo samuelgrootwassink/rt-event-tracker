@@ -261,11 +261,12 @@ class NewsAggregator():
         root = tree.getroot()
         
         feed = dict()
-        if 'RDF' in root.tag:
+        if 'rdf' in root.tag.lower():
             feed = self._parse_rdf(tree, root)
         else:
             #assuming that else the feed is a rss feed
             feed = self._parse_rss(tree, root)
+        
         if feed.title is None or feed.items == []:
             raise Exception(ERROR_PARSING)
         return feed
