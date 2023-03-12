@@ -477,3 +477,8 @@ This however requires a method that check how many two sets are the same, and to
 After some experimentation I figured out there were more types of xml feeds used by news websites, nameluy also rdf feeds. Therefore I am splitting the _parse_feed() into two for respectively rdf & rss
 
 At east the part for the rss feeds seems to work as well as the rdf xml feeds. Now acceptig that the NER is not a 100 percent but continuing on the common_entity_sets() method.
+
+## 12-03-2023
+
+Started fixing some issues and working on full test coverage. Still not completed due to new way of parsing feeds with different methods.
+Still need to create test coverage.
