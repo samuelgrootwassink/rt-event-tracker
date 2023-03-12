@@ -8,11 +8,91 @@ DEFAULT_PATH = 'modules/files/news_feeds.txt'
 
 class Item():
     
+    def __init__(self, feed, title, description):
+        
+        self._feed = feed
+        self._title = title
+        self._description = description
+        
     
+    @property
+    def title(self):
+        
+        return self._title
+    
+    
+    @property
+    def description(self):
+        
+        return self._description
+    
+    
+    @property
+    def weight(self):
+        
+        return self._feed.weight()
+    
+    
+    def to_dict(self):
+        
+        return {'title': self._title, 'description': self._description}
+    
+    
+class Feed():
+
+    def __init__(self, title, language):
+        
+        self._title = title
+        self._language = language
+        self._items = []
+    
+    @property
+    def title(self):
+        
+        return self._title
+    
+    
+    @property
+    def language(self):
+        
+        return self._language
+    
+    
+    @property
+    def items(self):
+        
+        return self._items
+        
+        
+    def _already_exists(self, title):
+        
+        existing_titles = {item.title.lower() for item in self._items}
+        if title.lower() in existing_titles:
+            return True
+        return False
+    
+    
+    def add_item(self, item):
+        title, description  = item
+        if self._already_exists(title):
+            return
+        
+        self._items.append(Item(self, title, description))
+
+    
+    def to_dict(self):
+        
+        feed_dict = {'title': self._title, 
+                        'language': self._language, 
+                        'items': [item.to_dict() for item in self._items]}
+        
+        return feed_dict
+        
+            
 class NewsAggregator():
     
     def __init__(self):
-        self._feeds = {}
+        self._feeds = []
         self._ner = ner.NER()
     
     
@@ -78,13 +158,84 @@ class NewsAggregator():
         return html_stripped_content
     
     
-    def _clean(self, content):
+    def _clean(self, content:str):
         
         html_stripped = self._html_strip(content)
         
         return html_stripped
     
-    def _parse_feed(self, rss_url:str):
+    def _parse_rdf(self, tree:ET.ElementTree,root:ET.Element):
+        
+        RDF_NS = {
+            'xmlns': 'http://purl.org/rss/1.0/',
+            'xmlns:rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+            'xmlns_dc':'http://purl.org/dc/elements/1.1/',
+            'xmlns:sy': 'http://purl.org/rss/modules/syndication/',
+            'xmlns:content':'http://purl.org/rss/1.0/modules/content/',
+            'xmlns:dwsyn': 'http://rss.dw.com/syndication/dwsyn/'
+        }
+        PATH_OPTIONS_RDF = {
+            'title':['xmlns:title','xmlns:channel/xmlns:title'],
+            'language':['xmlns:language', 'xmlns:channel/xmlns:language'],
+            'items':['xmlns:item'],
+            'item_title':['xmlns:title'],
+            'item_description':['xmlns:description']
+        }
+
+        return self._parse_feed(tree, root, PATH_OPTIONS_RDF, RDF_NS)
+    
+    
+    def _parse_rss(self, tree:ET.ElementTree,root:ET.Element):
+        
+        PATH_OPTIONS_RSS = {
+            'title':['title','channel/title'],
+            'language':['language', 'channel/language'],
+            'items':['item', 'channel/item'],
+            'item_title':['title'],
+            'item_description':['description']
+        }
+        
+        return self._parse_feed(tree, root, PATH_OPTIONS_RSS)
+        
+    
+    def _parse_feed(self, tree:ET.ElementTree, root:ET.Element, path_options:dict, ns:dict = {}):
+        
+        for path in path_options['title']:
+            title = root.find(path, ns)
+            if title != None:
+                title = title.text
+                break
+        
+        for path in path_options['language']:
+            language = root.find(path, ns)
+            if language != None:
+                language = language.text
+                break
+        
+        for path in path_options['items']:
+            items = root.findall(path, ns)
+            if items != []:
+                break
+        
+        feed = Feed(title, language) 
+        for item in items:
+            for path in path_options['item_title']:
+                item_title = item.find(path, ns)
+                if item_title != None:
+                    item_title = item_title.text
+                    break
+            for path in path_options['item_description']:
+                item_description = item.find(path, ns)
+                if item_description != None:
+                    item_description = ''.join(item.find(path, ns).itertext()).strip()
+                    break
+            item_description = self._clean(item_description)
+            feed.add_item((item_title, item_description))
+        
+        return feed
+    
+    
+    def _generate_feed(self, rss_url:str):
         """
         Parses a rss xml feed. Raises error the dictionary returned contains an empty title or items list. Retrieves feed name, language and title and description from all items. Returns them in a neat dictionary
         
@@ -108,25 +259,20 @@ class NewsAggregator():
              xml_feed = ET.parse(rss_url)
         tree = ET.ElementTree(xml_feed)
         root = tree.getroot()
-        # working here, checking how to handle different types of rss feeds, check guardian and deutche welle
-        title = root.find('channel/title').text
-        lang = root.find('language').text
         
-        feed = Feed(title, lang)  
-        items = root.findall('channel/item')
-        for item in items:
-            title = item.find('title').text.strip()
-            summary = "".join(item.find('description').itertext()).strip()
-            html_stripped_summary = self._clean(summary)
-            item_dict = {'title': title, 
-                         'summary': html_stripped_summary
-                         }
-            feed_dict['items'].append(item_dict)
-            
-        if feed_dict['title'] is None or feed_dict['items'] == []:
+        feed = dict()
+        if 'RDF' in root.tag:
+            feed = self._parse_rdf(tree, root)
+        else:
+            #assuming that else the feed is a rss feed
+            feed = self._parse_rss(tree, root)
+
+        if feed.title is None or feed.items == []:
             raise Exception(ERROR_PARSING)
-        return feed_dict
         
+        return feed
+
+
     @property
     def named_entities(self):
         """
@@ -138,13 +284,12 @@ class NewsAggregator():
         # change set into list and apply common entities method to return the most popular entities for further manipulation?
         named_entity_list = []
         for feed in self._feeds:
-            for entry in feed['items']:
+            for item in feed.items:
                 
-                ne_set = self._ner.named_entities(entry['summary'])
-                print(1, ne_set)
-                named_entity_list += ne_set
-                
-        common_entities = self._ner.common_entities(named_entity_list)
+                ne_set = self._ner.named_entities(f'{item.title}. {item.description}')
+                named_entity_list.append(ne_set)
+                print(ne_set)
+        common_entities = self._ner.common_entity_sets(named_entity_list)
         
         return common_entities
             
@@ -161,12 +306,15 @@ class NewsAggregator():
         """
         rss_url_set = self._file_to_set(file_path)
         for rss_url in rss_url_set:
-            feed = self._parse_feed(rss_url)
+            feed = self._generate_feed(rss_url)
             self._feeds.append(feed)
         
+    def to_dict(self):
+        
+        return [feed.to_dict() for feed in self._feeds]
+
     
     
         
-class Feed():
+
     
-    pass

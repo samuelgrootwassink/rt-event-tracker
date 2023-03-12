@@ -44,9 +44,9 @@ class NER():
  
         return ' '.join(word_list)            
 
-    def common_entities(self, named_entities, amount: int = 10):
-        
-        ne_dict = dict()
+    def common_entity_sets(self, named_entities, amount: int = 10):
+        # Working on this part, getting the common ne sets 
+        ne_dict = {entity:0 for entity in named_entities}
         for entity in named_entities:
             ne_dict[entity] = ne_dict.get(entity, 0) + 1
         
@@ -69,13 +69,12 @@ class NER():
         cleaned_sentences = [ self.remove_stopwords(sentence) for sentence in sentence_list]
         tokenized_sentence_list = [word_tokenize(sent) for sent in cleaned_sentences]
         tagged_sentence_list =  pos_tag_sents(tokenized_sentence_list)
-        
+
         ne_set = set()
         for sent in tagged_sentence_list:
-            tree = nltk.ne_chunk(sent, binary=False)
-            print(tree)
-            for ne in tree.subtrees(filter= lambda ne: ne.label() in {'GPE', 'PERSON', 'FAC'}):
+            tree = nltk.ne_chunk(sent, binary=True)
+            for ne in tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
                 named_entity = ' '.join([word[0] for word in ne])
                 ne_set.add(named_entity)
-        
+
         return ne_set

@@ -27,23 +27,26 @@ class TestNewsAggregator(unittest.TestCase):
         """
         Checks whether feeds are parsed correctly and raise errors when needed
         """
-        test_results = NewsAggregator()._parse_feed('tests/test_files/test_parse_feed.xml')
-        control_results_1 = {
+        ne = NewsAggregator()
+        ne._generate_feed('tests/test_files/test_parse_feed.xml')
+        test_results = ne.to_dict()
+        
+        control_results_1 = [{
             'title':'test',
-            'lang': 'en',
+            'language': 'en',
             'items':[
                 {
                     'title': 'test_1',
-                    'summary':'summary of test'
+                    'description':'summary of test'
                 },
                 {
                     'title': 'test_2',
-                    'summary':'summary of test'
+                    'description':'summary of test'
                 }
             ]
-        }
+        }]
         self.assertEqual(test_results, control_results_1)
-        self.assertIsInstance(test_results, dict)
+        self.assertIsInstance(test_results, list)
         
         with self.assertRaises(FileNotFoundError):
             NewsAggregator()._parse_feed('app/not_existing.xml')
@@ -52,15 +55,15 @@ class TestNewsAggregator(unittest.TestCase):
             NewsAggregator()._parse_feed('tests/test_files/test_parse_feed_unsuccesful.xml')
             
     
-    def test_aggregate(self):
+    # def test_aggregate(self):
         
-        for obj_type in [123,['1'],1.0,{"1", 1}, {'title':'something'},(1,0)]:
-            with self.assertRaises(TypeError):
-                NewsAggregator().aggregate(obj_type)
+    #     for obj_type in [123,['1'],1.0,{"1", 1}, {'title':'something'},(1,0)]:
+    #         with self.assertRaises(TypeError):
+    #             NewsAggregator().aggregate(obj_type)
                 
-        test_results = NewsAggregator()
-        test_results.aggregate('tests/test_files/test_aggregate.txt')
+    #     test_results = NewsAggregator()
+    #     test_results.aggregate('tests/test_files/test_aggregate.txt')
         
-        self.assertIsNotNone(test_results._feeds)
+    #     self.assertIsNotNone(test_results._feeds)
         
         

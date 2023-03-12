@@ -465,3 +465,15 @@ The Guardian feeds features a lot of the word 'Guardian':p
 Refactor of the newsparser module, to decrease complexity of the module I will add another class called Item(),
 This way every item parsed from rss feeds gets it own objects with its own methods to determine relations and NE.
 The inclusion of a Feed() object to relate their origin will also be included to weigh the amount of items produced by each feed.
+
+
+## 01-03-2023
+
+Instead of checking for single NE we are now going to check for sets of NE so that sets of NE are then run through Twitter to get a more narrow result list (that being the plan).
+This however requires a method that check how many two sets are the same, and to set for example a treshold of 80%. If sets contain this or higher percentage of the same values the weigh is increased (maybe the larger set is then being used?). Or the set that contains the most overlapping words is used.
+
+## 03-03-2023
+
+After some experimentation I figured out there were more types of xml feeds used by news websites, nameluy also rdf feeds. Therefore I am splitting the _parse_feed() into two for respectively rdf & rss
+
+At east the part for the rss feeds seems to work as well as the rdf xml feeds. Now acceptig that the NER is not a 100 percent but continuing on the common_entity_sets() method.
