@@ -482,3 +482,20 @@ At east the part for the rss feeds seems to work as well as the rdf xml feeds. N
 
 Started fixing some issues and working on full test coverage. Still not completed due to new way of parsing feeds with different methods.
 Still need to create test coverage.
+
+## 13-03-2023
+
+Methods that returns common entity sets in a dictionary. Whenever an identical set is found the weight is increased by one, whenever a set is more than 50% identical a value between 0.1 and 0.9 is added (per 10% 0.2 weight is added).
+
+Maybe a tershold of 80% identitcal would be more valuable as any lower can create a misinterpretation of data as a match of 50% does not mean a lot. This also means that of 5 words in a set 4 need to be identical raising the chances the added word only expands on the subject instead of talking about something unrelated
+
+I need to add a lemmatizer to the named entities method to prevent almost duplicate words from entering the NE sets for more accurate results
+
+## 15-03-2023
+
+Updated the common_entity_sets() roughly to compare sets and add any that have a similarity of 80% or above, want to change the mothod to easily change this percentage and the weight added according to specific similarity. Now any similarity above 80% adds a weight of 0.5. Identical sets add to a weight of 1.
+
+Added a small class called SampleData() that takes a sample of the parsed news data and their respective named entities for manual comparison and writes it to a txt file, to check whether the ner works as expected.
+
+After creating two samples to manually check with around 10-15 samples each I have come to the conclusion that what I want to extract out of the text only matches for around 60-70% of what my ner algorithm catches. 
+Now seeing what I should change, extended my tests to include some of the failed manual samples and see where the problem lies, whether it is the preprocessing, the nlm or something else.

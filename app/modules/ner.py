@@ -1,15 +1,16 @@
 import nltk, re
 from nltk.corpus import stopwords
 from nltk.tag import pos_tag, pos_tag_sents
-from nltk.tokenize import word_tokenize, sent_tokenize
-
+from nltk.tokenize import sent_tokenize, RegexpTokenizer
+from nltk.stem import WordNetLemmatizer
 nltk.data.path.append('../NLTK_DATA')
 # nltk.download(['stopwords', 
 #                'vader_lexicon', 
 #                'punkt', 
 #                'averaged_perceptron_tagger',
 #                'maxent_ne_chunker', 
-#                'words'], 
+#                'words',
+#                 'wordnet'], 
 #               download_dir='../NLTK_DATA')
 
 
@@ -21,7 +22,7 @@ class NER():
         self.__english_stopwords = set(stopwords.words('english'))
         
         
-    def remove_stopwords(self, sentence:str):
+    def clean_sentence(self, sentence:list):
         """
         Tries to remove all stopwords with the help of the nltk.corpus stopwords.
 
@@ -34,25 +35,35 @@ class NER():
         if isinstance(sentence, str) is False:
             raise TypeError
         
+        tokenizer = RegexpTokenizer(r"[a-zA-Z0-9]+")
+        lemmatizer = WordNetLemmatizer()
+        tokenized_sentence = tokenizer.tokenize(sentence)
         english_stopwords = self.__english_stopwords
-        word_list = []
-        tokenized_sentence =  word_tokenize(sentence)
-        for word in tokenized_sentence:
-            if word.lower() in english_stopwords:
+        token_list = []
+        for token in tokenized_sentence:
+            if token.lower() in english_stopwords:
                 continue
-            word_list.append(word)
- 
-        return ' '.join(word_list)            
+            token = lemmatizer.lemmatize(token)
+            token_list.append(token)
+            
+        return token_list          
 
-    def common_entity_sets(self, named_entities, amount: int = 10):
-        # Working on this part, getting the common ne sets 
-        ne_dict = {entity:0 for entity in named_entities}
-        for entity in named_entities:
-            ne_dict[entity] = ne_dict.get(entity, 0) + 1
+
+    def common_entity_sets(self, named_entities:list):
+
+        common_entities_dict = {named_entity_set : 0 for named_entity_set in named_entities}
         
-        common_entities = sorted(ne_dict, key = lambda key: ne_dict.get(key), reverse=True)
+        for nes in common_entities_dict:
+            if not nes or len(nes) <= 1:
+                continue
+            for ne in named_entities:
+                if nes == ne :
+                    common_entities_dict[nes] += 1
+                elif max(len(ne.intersection(nes)), 1) / len(nes) >= 0.7:
+                    common_entities_dict[nes] += 0.5
         
-        return common_entities[:amount]
+        return common_entities_dict
+
     
     def named_entities(self, sentences:str):
         """
@@ -66,15 +77,15 @@ class NER():
         """
         
         sentence_list = sent_tokenize(sentences)
-        cleaned_sentences = [ self.remove_stopwords(sentence) for sentence in sentence_list]
-        tokenized_sentence_list = [word_tokenize(sent) for sent in cleaned_sentences]
-        tagged_sentence_list =  pos_tag_sents(tokenized_sentence_list)
-
+        cleaned_sents = list(self.clean_sentence(sent) for sent in sentence_list)
+        tagged_sentence_list =  pos_tag_sents(cleaned_sents)
         ne_set = set()
         for sent in tagged_sentence_list:
-            tree = nltk.ne_chunk(sent, binary=True)
-            for ne in tree.subtrees(filter= lambda ne: ne.label() == 'NE'):
+            tree = nltk.ne_chunk(sent, binary=False)
+            for ne in tree.subtrees(filter= lambda ne: ne.label() in {'PERSON','ORGANIZATION', 'GSP', 'GPE'}):
                 named_entity = ' '.join([word[0] for word in ne])
                 ne_set.add(named_entity)
 
-        return ne_set
+        return frozenset(ne_set)
+    
+    

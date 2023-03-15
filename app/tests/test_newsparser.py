@@ -117,4 +117,4 @@ class TestNewsAggregator(unittest.TestCase):
         
     
     def tes_aggregate(self):
-        
+        pass

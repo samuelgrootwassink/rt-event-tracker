@@ -254,7 +254,7 @@ class NewsAggregator():
 
         if self._is_url(rss_url) is True:
             content = requests.get(rss_url).content
-            tree = ET.fromstring(content)
+            tree = ET.ElementTree(ET.fromstring(content))
         else:
              tree = ET.parse(rss_url)
              
@@ -287,10 +287,10 @@ class NewsAggregator():
                 
                 ne_set = self._ner.named_entities(f'{item.title}. {item.description}')
                 named_entity_list.append(ne_set)
-                print(ne_set)
-        # common_entities = self._ner.common_entity_sets(named_entity_list)
+                
+        common_entity_sets = self._ner.common_entity_sets(named_entity_list)
         
-        # return common_entities
+        return common_entity_sets
             
        
     def aggregate(self, file_path:str = DEFAULT_PATH):

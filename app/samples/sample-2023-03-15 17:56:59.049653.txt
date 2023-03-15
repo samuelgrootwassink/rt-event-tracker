@@ -1,0 +1,29 @@
+Date: 2023-03-15 17:56:59.049804, Sample size: 3,
+ Sources: ['The Guardian', 'Deutsche Welle', 'BBC News - World']
+Since the drug lord’s imported hippos escaped after his death in 1993, the government has repeatedly failed to tame the booming populationThe first time a hippo emerged from the trees, waddled cumbersomely across the grass and slid down the river bank into the murky brown waters of the Cocorná River, the fishermen in Las Angelitas froze in awe.“We’d heard rumours of these hippos and seen footprints downriver but as we’ve never been to a zoo we’d never seen an animal like that in real life,” says Franki de Jesús Zapata Ciron. “An animal all the way from Africa, here!? It seemed curious and beautiful.” Local families stopped working and gathered to gaze at the three-tonne beast, Zapata recalls. Continue reading...
+frozenset({'Cocorná River', 'Las', 'Africa', 'Zapata', 'Jesús Zapata Ciron', 'Continue', 'populationThe', 'Franki'})
+
+We would like to hear views and opinions from Russians at this stage of the Russia-Ukraine warRussia has announced a partial mobilisation in a major escalation that places the country’s people and economy on a wartime footing.With president Vladimir Putin also threatening nuclear retaliation, we would like to hear from Russians about how ordinary people are reacting to the latest developments in the war on Ukraine. Continue reading...
+frozenset({'Vladimir Putin', 'Ukraine', 'Russians', 'Continue'})
+
+Inspired by neurogastronomy, Irene Iborra’s menu explores the unusual flavours that evoke childhood memoriesIrene Iborra tells tales with ice-cream and with a single lick she can summon up memories that send you spinning back to your childhood days.“When I opened Mamá Heladera in 2021 I thought: how can taste provoke memories and how can I find what these tastes are?” she said. Continue reading...
+frozenset({'Irene Iborra', 'Mamá Heladera', 'memoriesIrene Iborra', 'Continue'})
+
+Myanmar's forests are under threat from the lucrative trade of valuable wood. An investigation has revealed how despite sanctions, teak is flooding Europe.
+frozenset({'Europe', 'Myanmar'})
+
+Michael Caine can boast a long acting career. Appearing in more than 160 films, the two-time Oscar winner has turned 90.
+frozenset({'Michael', 'Caine'})
+
+Europe's largest sporting goods company is expecting a lackluster year after splitting with disgraced rapper Kanye West. The company has made a point to distance itself from West's antisemitic comments.
+frozenset({'Europe', 'West', 'Kanye West'})
+
+A full-circle moment, a very hyperactive bear and a reference to The Slap feature in the ceremony.
+frozenset({'Slap'})
+
+The police officer was helping a driver on a US motorway and was only left with minor injuries.
+frozenset({'US'})
+
+There are violent scenes as police fail to arrest Pakistan's opposition leader for a second day.
+frozenset({'Pakistan'})
+
