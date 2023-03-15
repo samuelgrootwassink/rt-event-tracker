@@ -1,0 +1,47 @@
+Date: 2023-03-15 22:42:20.875079, Sample size: 3,
+ Sources: ['Deutsche Welle', 'Al Jazeera – Breaking News, World News and Video from Al Jazeera', 'BBC News - World', 'The Guardian', 'Sydney Morning Herald - World']
+Israeli actor Chaim Topol, best known for his iconic lead role in the stage musical and film "Fiddler on the Roof," has died at age 87 in Tel Aviv.
+frozenset({'Fiddler Roof', 'Tel Aviv', 'Israeli', 'Chaim Topol'})
+
+The goal of the change is to expand the use of long-term contracts to protect consumers from severe price hikes. The European Commission also aims to make the bloc's supply less dependent on fossil fuels.
+frozenset({'Commission', 'European'})
+
+Many companies produce huge amounts of CO2. Now that courts in some countries have ordered politicians to do more to protect the climate, businesses are increasingly being sued. Are large claims for damages looming?
+frozenset({'CO2'})
+
+Tensions are growing in Senegal as President Macky Sall could vie for a controversial third term in the 2024 election.
+frozenset({'Macky Sall', 'Senegal'})
+
+Finance minister Jeremy Hunt unveils measures aimed at boosting workforce as strikers demand better wages, conditions.
+frozenset({'Jeremy Hunt'})
+
+Shares of Swiss bank lose more than a quarter of their value in one day, dragging down European and US markets.
+frozenset({'Shares', 'European US', 'Swiss'})
+
+The 88-year-old wrote books about pacifism and coping with a son who had learning difficulties.
+frozenset()
+
+Two US banks have collapsed and shares tumbled. So how serious is this and what does it mean for you?
+frozenset({'US'})
+
+Officers leave the home of Pakistan's main opposition leader after they tried to arrest him.
+frozenset({'Pakistan'})
+
+Analysis of bones found in 1987 suggest Jurassic-era sauropod was animal with longest known neckA dinosaur that roamed east Asia more than 160m years ago has been named a contender for the animal with the longest neck ever known.A new analysis of bones from the beast’s neck and skull revealed that the dinosaur, known as Mamenchisaurus sinocanadorum, sported a neck 15metres long, or one-and-a-half times the length of a doubledecker bus. Continue reading...
+frozenset({'Analysis', 'Mamenchisaurus', 'Asia', 'neckA'})
+
+Ben Wallace urges respect for international airspace as presumption grows incident was one-off blunder by Russian pilotRussia-Ukraine war – latest news updatesThe UK defence secretary, Ben Wallace, accused Russia of acting “unprofessionally” in an incident that led to the downing of a $32m US Reaper drone in the Black Sea after it was harassed by two Russian fighter jets.The comments, made while the minister was visiting Japan, reflect an emerging western view that the extraordinary mid-air incident was a one-off, not immediately meriting anything stronger than diplomatic complaints. Continue reading...
+frozenset({'Japan', 'Black Sea', 'US Reaper', 'Russian', 'Russia', 'pilotRussia Ukraine', 'Ben', 'Wallace', 'updatesThe', 'Ben Wallace'})
+
+Updates from the 8pm GMT kick-off at the BernabéuLive scoreboard – the latest from Wednesday’s matchesGet in touch: you can email Scott here with your thoughtsBenzema and Milner shake hands, exchange pennants and toss coins … then Liverpool get the ball rolling. “James Milner is an incredible footballer,” writes Rwik Chattopadhyay. “He made his Premier League debut for Leeds on 10 November 2002 — the day Eduardo Camavinga was born! 845 appearances for his clubs! What a guy! No wonder Klopp calls him Mr Consistent.The teams are out! Real Madrid in white, Liverpool in red. Two classic looks as old as time. Zadok the Priest (Version) blasts out of the PA system, not to universal approval it has to be said. The previous entry just might go some way to explaining that. Anyway, a cracking atmosphere under the Bernabeu lights. We’ll be off in a minute! Continue reading...
+frozenset({'James', 'Rwik Chattopadhyay', 'Bernab', 'Priest Version', 'Liverpool', 'thoughtsBenzema Milner', 'Klopp', 'Eduardo Camavinga', 'Zadok', 'Real', 'PA', 'Milner', 'Bernabeu', 'Scott', 'Madrid'})
+
+Russia and the US are ratcheting up confrontational rhetoric over an American surveillance drone that collided with a Russian fighter jet.
+frozenset({'Russian', 'American', 'Russia US'})
+
+The Pentagon has declined to say whether it will attempt to recover a US Air Force drone after it collided with a Russian fighter jet.
+frozenset({'Russian', 'US Air Force', 'Pentagon'})
+
+Harris County Sheriff briefs the media on the accidental shooting death of a four-year-old girl.
+frozenset({'County Sheriff', 'Harris'})
+

@@ -24,13 +24,12 @@ class NER():
         
     def clean_sentence(self, sentence:list):
         """
-        Tries to remove all stopwords with the help of the nltk.corpus stopwords.
-
+        Tries to clean the sentence of all stopwords, lemmatize the sentence and remove punctuation
         Args:
             text (str): Text from which stopwords need to be removed
 
         Returns:
-            str: The stripped string 
+            list: The tokenized string as a list
         """
         if isinstance(sentence, str) is False:
             raise TypeError
@@ -39,17 +38,19 @@ class NER():
         lemmatizer = WordNetLemmatizer()
         tokenized_sentence = tokenizer.tokenize(sentence)
         english_stopwords = self.__english_stopwords
+        
         token_list = []
         for token in tokenized_sentence:
             if token.lower() in english_stopwords:
                 continue
+            
             token = lemmatizer.lemmatize(token)
             token_list.append(token)
             
         return token_list          
 
 
-    def common_entity_sets(self, named_entities:list):
+    def common_entity_sets(self, named_entities:list, similarity = 0.8):
 
         common_entities_dict = {named_entity_set : 0 for named_entity_set in named_entities}
         
@@ -57,11 +58,11 @@ class NER():
             if not nes or len(nes) <= 1:
                 continue
             for ne in named_entities:
+                current_similarity = max(len(ne.intersection(nes)), 1) / len(nes)
                 if nes == ne :
                     common_entities_dict[nes] += 1
-                elif max(len(ne.intersection(nes)), 1) / len(nes) >= 0.7:
-                    common_entities_dict[nes] += 0.5
-        
+                elif current_similarity >= similarity:
+                    common_entities_dict[nes] += 0.5 
         return common_entities_dict
 
     

@@ -1,3 +1,6 @@
+#This is a comment
 https://rss.dw.com/rdf/rss-en-all
 https://www.theguardian.com/international/rss
 http://feeds.bbci.co.uk/news/world/rss.xml
+https://www.smh.com.au/rss/world.xml
+https://www.aljazeera.com/xml/rss/all.xml
