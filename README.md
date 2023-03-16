@@ -117,14 +117,15 @@ Python:
 
 - The Straits Times (Asia-Pacific)
 - The Sydney Morning Herald (Australia/Oceania)
-- El País (Latin America)
-- Le Monde (Europe)
+- El País (Latin America) X
+- Le Monde (Europe) 
 - Al-Arabiya (Middle East)
 - The Guardian Nigeria (Africa)
-- La Nación (Latin America)
+- La Nación (Latin America) X
 - South China Morning Post (Asia-Pacific)
 - The Moscow Times (Russia and Eastern Europe)
-- The Daily Star (South Asia)
+- The Daily Star (South Asia) X
+
 - BBC News
 - CNN
 - Reuters
