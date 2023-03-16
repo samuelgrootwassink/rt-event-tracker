@@ -11,45 +11,44 @@ DEFAULT_PATH = 'modules/files/news_feeds.txt'
 class Item():
 
     def __init__(self, feed, title, description):
-
         self._feed = feed
         self._title = title
         self._description = description
-        self._content = f'{title} {description}'
+        self._content = f'{title.strip("?!.;")}. {description}'
 
     @property
     def title(self):
-
         return self._title
 
 
     @property
     def description(self):
-
         return self._description
 
 
     @property
     def weight(self):
-
         return self._feed.weight()
 
     
     @property
     def content(self):
-        
         return self._content
     
     
     def to_dict(self):
+        """
+        Returns a dict of all the information contained by an Item() instance
 
+        Returns:
+            dict: Dict containing all info
+        """
         return {'title': self._title, 'description': self._description, 'content': self._content}
 
 
 class Feed():
 
     def __init__(self, title, language):
-
         self._title = title
         self._language = language
         self._items = []
@@ -57,24 +56,29 @@ class Feed():
 
     @property
     def title(self):
-
         return self._title
 
 
     @property
     def language(self):
-
         return self._language
 
 
     @property
     def items(self):
-
         return self._items
 
 
     def _already_exists(self, title):
+        """
+        Checks whether an Item() instance allready exists, returns a boolean value
 
+        Args:
+            title (str): Title of a specific Item()
+
+        Returns:
+            bool: Whether an item with this title already exists in this feed
+        """
         existing_titles = {item.title.lower() for item in self._items}
         if title.lower() in existing_titles:
             return True
@@ -82,6 +86,12 @@ class Feed():
 
 
     def add_item(self, item):
+        """
+        Adds an Item() instance to this feed instance
+
+        Args:
+            item (tuple): The item that is parsed from a an xml feed
+        """
         title, description = item
         if self._already_exists(title):
             return
@@ -90,7 +100,12 @@ class Feed():
 
 
     def to_dict(self):
+        """
+        Converts the feed information and its items to a dictionary
 
+        Returns:
+            dict: Dictioary containing all feed information
+        """
         feed_dict = {'title': self._title,
                      'language': self._language,
                      'items': [item.to_dict() for item in self._items]}
@@ -170,18 +185,45 @@ class NewsAggregator():
 
 
     def _remove_accents(self, content: str):
+        """
+        Replaces all accented characters for later text processing
+
+        Args:
+            content (str): Content that needs to be checked for accented characters
+
+        Returns:
+            str: String with 'all' (In english language) accented characters replaced
+        """
         s = unidecode(content, "utf-8")
         return unidecode(s)
 
 
     def _clean(self, content: str):
+        """
+        Handles the cleaning of strings by replacing accented characters, stripping html, 
+
+        Args:
+            content (str): Content that needs to be cleaned
+
+        Returns:
+            str: Cleaned string
+        """
         unaccented_content = self._remove_accents(content)
         clean_content = self._html_strip(unaccented_content)
         return clean_content
 
 
     def _parse_rdf(self, tree: ET.ElementTree, root: ET.Element):
+        """
+        Provides the information needed by the _parse_feed() method to succesfully parse a RDF feed
 
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+
+        Returns:
+            Feed: A feed instance containing all parsed data
+        """
         RDF_NS = {
             'xmlns': 'http://purl.org/rss/1.0/',
             'xmlns:rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -202,7 +244,16 @@ class NewsAggregator():
 
 
     def _parse_rss(self, tree: ET.ElementTree, root: ET.Element):
+        """
+        Provides the information needed by the _parse_feed() method to succesfully parse a RSS feed
 
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+
+        Returns:
+            Feed: A feed instance containing all parsed data
+        """
         PATH_OPTIONS_RSS = {
             'title': ['title', 'channel/title'],
             'language': ['language', 'channel/language'],
@@ -215,7 +266,18 @@ class NewsAggregator():
 
 
     def _parse_feed(self, tree: ET.ElementTree, root: ET.Element, path_options: dict, ns: dict = {}):
+        """
+        Parses the feed provided it has the correct paths/ namespaces
 
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+            path_options (dict): Path options that need to be checked in order to get to the good stuff that we want
+            ns (dict, optional): Namespaces needed for handling RDF feeds. Defaults to {}.
+
+        Returns:
+            Feed: A feed instances with all the parsed iniformation
+        """
         for path in path_options['title']:
             title = root.find(path, ns)
             if title != None:
@@ -232,7 +294,6 @@ class NewsAggregator():
             items = root.findall(path, ns)
             if items != []:
                 break
-
         feed = Feed(title, language)
         for item in items:
             for path in path_options['item_title']:
@@ -273,6 +334,7 @@ class NewsAggregator():
             content = requests.get(rss_url).content
             tree = ET.ElementTree(ET.fromstring(content))
         else:
+            print('wrong')
             tree = ET.parse(rss_url)
 
         root = tree.getroot()
@@ -297,7 +359,6 @@ class NewsAggregator():
         Returns:
             set: All encountered named entities
         """
-        # change set into list and apply common entities method to return the most popular entities for further manipulation?
         named_entity_list = []
         for feed in self._feeds:
             for item in feed.items:
@@ -326,5 +387,10 @@ class NewsAggregator():
             self._feeds.append(feed)
 
     def to_dict(self):
+        """
+        Returns a list containing a dictionary for each feeds and it's items
 
+        Returns:
+            list: A list filled with dictionaries
+        """
         return [feed.to_dict() for feed in self._feeds]

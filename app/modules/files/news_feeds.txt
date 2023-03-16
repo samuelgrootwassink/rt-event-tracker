@@ -1,6 +1,16 @@
-#This is a comment
+#global
 https://rss.dw.com/rdf/rss-en-all
 https://www.theguardian.com/international/rss
 http://feeds.bbci.co.uk/news/world/rss.xml
-https://www.smh.com.au/rss/world.xml
 https://www.aljazeera.com/xml/rss/all.xml
+https://rss.nytimes.com/services/xml/rss/nyt/World.xml
+http://www.chinadaily.com.cn/rss/world_rss.xml
+https://www.thehindu.com/news/international/feeder/default.rss
+
+#regional
+https://www.lemonde.fr/en/europe/rss_full.xml
+https://www.smh.com.au/rss/national.xml
+https://english.alarabiya.net/feed/rss2/en/News.xml
+https://guardian.ng/category/news/rss
+https://www.scmp.com/rss/3/feed
+https://www.themoscowtimes.com/rss/news

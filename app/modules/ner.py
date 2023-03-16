@@ -16,7 +16,6 @@ nltk.data.path.append('../NLTK_DATA')
 
 class NER():
     
-    
     def __init__(self):
         
         self.__english_stopwords = set(stopwords.words('english'))
@@ -51,7 +50,16 @@ class NER():
 
 
     def common_entity_sets(self, named_entities:list, similarity = 0.8):
+        """
+        Checks whether there are identical entity sets to gather information what topics are talked most about by different news outlets. Also handles partial matching
 
+        Args:
+            named_entities (list): List with frozensets() of encountered named entities found in news feeds
+            similarity (float, optional): The minimum percentage of similarity for weight to be added. Defaults to 0.8.
+
+        Returns:
+            dictionary: A dictionary with named entity sets and their weights
+        """
         common_entities_dict = {named_entity_set : 0 for named_entity_set in named_entities}
         
         for nes in common_entities_dict:
