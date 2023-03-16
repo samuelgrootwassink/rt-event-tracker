@@ -499,3 +499,9 @@ Added a small class called SampleData() that takes a sample of the parsed news d
 
 After creating two samples to manually check with around 10-15 samples each I have come to the conclusion that what I want to extract out of the text only matches for around 60-70% of what my ner algorithm catches. 
 Now seeing what I should change, extended my tests to include some of the failed manual samples and see where the problem lies, whether it is the preprocessing, the nlm or something else.
+
+
+## 16-02-2023
+
+Updated parameters for NER module and worked on cleaning up the text that is being parsed for 'hopefully' better results. Also added another method to get all the common named entities into a text file for further observation. 
+Now I need to clean up everything, see if test coverage is plenty, write documentation and continue on to the next stage of the project

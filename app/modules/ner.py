@@ -81,9 +81,18 @@ class NER():
         cleaned_sents = list(self.clean_sentence(sent) for sent in sentence_list)
         tagged_sentence_list =  pos_tag_sents(cleaned_sents)
         ne_set = set()
+        NAMED_ENTITY_TYPES = {'PERSON',
+                              'ORGANIZATION', 
+                              'GSP', 
+                              'GPE', 
+                              'DATE', 
+                              'MONEY', 
+                              'FACILITY', 
+                              'PERCENT'}
+        
         for sent in tagged_sentence_list:
             tree = nltk.ne_chunk(sent, binary=False)
-            for ne in tree.subtrees(filter= lambda ne: ne.label() in {'PERSON','ORGANIZATION', 'GSP', 'GPE'}):
+            for ne in tree.subtrees(filter= lambda ne: ne.label() in NAMED_ENTITY_TYPES ):
                 named_entity = ' '.join([word[0] for word in ne])
                 ne_set.add(named_entity)
 

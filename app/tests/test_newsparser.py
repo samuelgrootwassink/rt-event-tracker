@@ -10,11 +10,13 @@ CONTROL_RESULTS_DICT = {
                             'items':[
                                 {
                                     'title': 'test_1',
-                                    'description':'summary of test'
+                                    'description':'summary of test',
+                                    'content': 'test_1 summary of test'
                                 },
                                 {
                                     'title': 'test_2',
-                                    'description':'summary of test'
+                                    'description':'summary of test',
+                                    'content': 'test_2 summary of test'
                                 }
                             ]
                         }
