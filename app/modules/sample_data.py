@@ -37,8 +37,8 @@ class SampleData():
     
     def sample_common_entity_types(self, treshold = 0.1):
         
-        with open(f'samples/sample-common-{datetime.now()}.txt','x') as f:
-            f.write(f'Date: {datetime.now()}\nSources: {self._sources}\nWeight Treshold: {treshold}\n')
+        with open(f'samples/sample-common-entity-sets-{datetime.now()}.txt','x') as f:
+            f.write(f'Date: {datetime.now()}\nSources: {self._sources}\nWeight Treshold: {treshold}\n\n')
             for ne_set, weight in self._common_entity_types.items():
                 if weight < treshold:
                     continue
