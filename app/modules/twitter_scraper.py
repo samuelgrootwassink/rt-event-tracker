@@ -110,12 +110,11 @@ class TwitterScraper():
         for query in queries:
             twitter_query = TwitterQuery(query)
             my_query = twitter_query.query
-            response = self._client.search_recent_tweets(f"({my_query} ) -is:retweet lang:en" , expansions=['geo.place_id'], max_results = 100)
+            response = self._client.search_recent_tweets(f"({my_query} ) -is:retweet lang:en" , max_results = 100)
             tweets = response.data
             
             for tweet in tweets:
                 tweet_dict = {
-                    print(tweet.geo.place_id)
                     'id' : tweet.id,
                     'content': tweet.text,
                     'query': self
