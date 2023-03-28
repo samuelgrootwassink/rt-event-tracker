@@ -118,5 +118,5 @@ class TestNewsAggregator(unittest.TestCase):
         self.assertEqual(test_result, CONTROL_RESULTS_DICT)
         
     
-    def tes_aggregate(self):
+    def test_aggregate(self):
         pass
