@@ -1,7 +1,7 @@
 import requests
 import re
 import xml.etree.ElementTree as ET
-import modules.ner as ner
+from  modules.nlp import NER
 from unidecode import unidecode
 
 ERROR_PARSING = 'The parser was unable to succesfully parse the feed or the feed was incomplete'
@@ -117,7 +117,7 @@ class NewsAggregator():
 
     def __init__(self):
         self._feeds = []
-        self._ner = ner.NER()
+        self._ner = NER()
 
 
     def _file_to_set(self, file_path: str):
@@ -366,7 +366,7 @@ class NewsAggregator():
                 ne_set = self._ner.named_entities(item.content)
                 named_entity_list.append(ne_set)
 
-        common_entity_sets = self._ner.common_entity_sets(named_entity_list)
+        common_entity_sets = self._ner.common_entity_sets(named_entity_list, minimum_set_length=2)
 
         return common_entity_sets
 

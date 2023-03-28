@@ -1,0 +1,32 @@
+Date: 2023-03-18 14:48:18.518871
+Sources: ['\n China Daily > China News \n', 'Al Jazeera – Breaking News, World News and Video from Al Jazeera', 'News – The Guardian Nigeria News – Nigeria and World News', 'The Moscow Times - Independent News From Russia', ' | The Hindu', 'Europe : Latest news on Le Monde.fr.', 'The Guardian', 'Deutsche Welle', 'Asia - South China Morning Post', 'Sydney Morning Herald - National', 'NYT > World News', 'News', 'BBC News - World']
+Weight Treshold: 1.5
+
+1.5 >>  ({'Moscow', 'Russia', 'Ukraine', 'Kyiv', 'NATO'})
+
+1.5 >>  ({'French', 'Macron', 'MPs', 'France', 'Emmanuel Macron'})
+
+1.5 >>  ({'French', 'Macron', 'Pension', 'France', 'Emmanuel Macron'})
+
+1.75 >>  ({'Russian', 'Putin', 'Ukraine', 'Court', 'ICC'})
+
+1.75 >>  ({'Russia', 'Ukraine', 'Putin', 'Russians', 'Vladimir Putin'})
+
+1.84 >>  ({'Russian', 'Putin', 'Ukraine', 'Hague', 'ICC', 'Vladimir Putin'})
+
+1.9 >>  ({'Khan', 'Imran Khan', 'Pakistan'})
+
+2 >>  ({'Asian', 'Massacre', 'Japanese', 'San Francisco', 'Chinese'})
+
+2.35 >>  ({'Islamabad', 'Khan', 'Pakistan'})
+
+2.35 >>  ({'Imran Khan', 'Pakistan', 'Lahore'})
+
+2.35 >>  ({'Russia', 'China', 'Chinese'})
+
+2.35 >>  ({'France', 'Paris', 'Macron'})
+
+3.7 >>  ({'Russian', 'Russia', 'Ukrainian'})
+
+6.85 >>  ({'Russian', 'Russia', 'Ukraine'})
+

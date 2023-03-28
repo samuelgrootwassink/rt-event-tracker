@@ -501,7 +501,579 @@ After creating two samples to manually check with around 10-15 samples each I ha
 Now seeing what I should change, extended my tests to include some of the failed manual samples and see where the problem lies, whether it is the preprocessing, the nlm or something else.
 
 
-## 16-02-2023
+## 16-03-2023
 
 Updated parameters for NER module and worked on cleaning up the text that is being parsed for 'hopefully' better results. Also added another method to get all the common named entities into a text file for further observation. 
 Now I need to clean up everything, see if test coverage is plenty, write documentation and continue on to the next stage of the project
+
+## 27-03-2023
+
+Time for a rethink of the project and it's scope. Whether it would be more beneficial or not to make it a cli instead of a website for example, and how to structure the underlying parts. 
+Right now the newsparser and nlp are two seperate modules making the twitterscraper a third module.
+Every tweet is stored in an object which is then stored by a tweet query
+
+This still seems to be an okay way to handle things and I would first need to make the Twitter sentiment analyses before actually working on a working application itself in my opinion as only when the underlying algorithms work is the application actually worth something.
+
+For a basic outline however:
+
+CLI - >
+First time accessing asks for a twitter oauth bearer token, saves everything to a local db. 
+With this you'll be able to run the algorithm to get twitter sentiment regarding news topics. 
+Current functionality provides the user with the option to determine weight for the news parser nlp, would we want that as added functionality?
+
+First step is to get twitter bearer token, save location on disk and then a the option to get a sentiment analyses of trending news topics in a graph?
+
+Second step is to get trending news topic sentiments and the shifts over a period of time. 
+For a number of cycles with a certain interval provided in minutes by the user. After which this data is used to present a graph
+
+As a last option, all this is save to a local db, user can select to create a graph for all time, last month, last 7 days and last day.
+
+First to prepare the twitter data
+
+Unsure whether to search tweets by hashtag of purely by content
+Searching a tweet by hastag ensures a user deliberatly does so, only searching by text turns up news articles, most of the time at least while manually testing. However when looking at the hashtags, the bigger the amount of entities found the smaller the chance to find tweets containing all hastags sooo what to do. Maybe also partially matching hashtags? but how then to know whether the subject is the correct subject 
+
+After speaking with Timothy, drop ORM idea, plain old dump data in db
+Db for raw data and analyses, two distinct tables 
+
+I need to add dates to the news articles and now chosing to definitively swap over to the feedparser module for parsing rss feeds as this makes my workflow faster easier and able to use reliable parser.
+
+I will however keep my own parsing module as a backup
+
+<details>
+<summary>Parsing module with help of XML.etree </summary>
+
+```
+
+import requests
+import re
+import xml.etree.ElementTree as ET
+from  modules.nlp import NER
+from unidecode import unidecode
+
+ERROR_PARSING = 'The parser was unable to succesfully parse the feed or the feed was incomplete'
+DEFAULT_PATH = 'modules/files/news_feeds.txt'
+
+
+class Item():
+
+    def __init__(self, feed, title, description):
+        self._feed = feed
+        self._title = title
+        self._description = description
+        self._content = f'{title.strip("?!.;")}. {description}'
+
+    @property
+    def title(self):
+        return self._title
+
+
+    @property
+    def description(self):
+        return self._description
+
+
+    @property
+    def weight(self):
+        return self._feed.weight()
+
+    
+    @property
+    def content(self):
+        return self._content
+    
+    
+    def to_dict(self):
+        """
+        Returns a dict of all the information contained by an Item() instance
+
+        Returns:
+            dict: Dict containing all info
+        """
+        return {'title': self._title, 'description': self._description, 'content': self._content}
+
+
+class Feed():
+
+    def __init__(self, title, language):
+        self._title = title
+        self._language = language
+        self._items = []
+
+
+    @property
+    def title(self):
+        return self._title
+
+
+    @property
+    def language(self):
+        return self._language
+
+
+    @property
+    def items(self):
+        return self._items
+
+
+    def _already_exists(self, title):
+        """
+        Checks whether an Item() instance allready exists, returns a boolean value
+
+        Args:
+            title (str): Title of a specific Item()
+
+        Returns:
+            bool: Whether an item with this title already exists in this feed
+        """
+        existing_titles = {item.title.lower() for item in self._items}
+        if title.lower() in existing_titles:
+            return True
+        return False
+
+
+    def add_item(self, item):
+        """
+        Adds an Item() instance to this feed instance
+
+        Args:
+            item (tuple): The item that is parsed from a an xml feed
+        """
+        title, description = item
+        if self._already_exists(title):
+            return
+
+        self._items.append(Item(self, title, description))
+
+
+    def to_dict(self):
+        """
+        Converts the feed information and its items to a dictionary
+
+        Returns:
+            dict: Dictioary containing all feed information
+        """
+        feed_dict = {'title': self._title,
+                     'language': self._language,
+                     'items': [item.to_dict() for item in self._items]}
+
+        return feed_dict
+
+
+class NewsAggregator():
+
+    def __init__(self):
+        self._feeds = []
+        self._ner = NER()
+
+
+    def _file_to_set(self, file_path: str):
+        """
+        Reads file from file_path and returns each line as an element of a set.
+        Ignores comments '#' and empty lines
+
+        Args:
+            file_path (str): The file to be read
+
+        Returns:
+            set: A set with all lines of the read file
+        """
+        if not isinstance(file_path, str):
+            raise TypeError
+
+        set_of_file = set()
+
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                stripped_line = line.strip()
+                if stripped_line == '':
+                    continue
+                elif stripped_line[0] == '#':
+                    continue
+                set_of_file.add(stripped_line)
+        return set_of_file
+
+
+    def _is_url(self, string: str):
+        """
+        Checks wether a string is a url
+        Very barebones, only checks if contains:
+        http
+        https
+
+        Args:
+            string (str): Provide a string and check wether it is a url
+
+        Returns:
+            bool: Whether it is found to be a url
+        """
+        for prefix in ['http://', 'https://']:
+            if prefix in string:
+                return True
+
+        return False
+
+
+    def _html_strip(self, content: str):
+        """
+        Strip all HTML tags through RegEx, not sanitized.
+
+        Args:
+            content (str): String that needs to be stripped of HTML tags
+
+        Returns:
+            str: Stripped version of content that is returned
+        """
+        pattern = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+        html_stripped_content = re.sub(
+            pattern, ' ', content).replace('  ', ' ').strip()
+        return html_stripped_content
+
+
+    def _remove_accents(self, content: str):
+        """
+        Replaces all accented characters for later text processing
+
+        Args:
+            content (str): Content that needs to be checked for accented characters
+
+        Returns:
+            str: String with 'all' (In english language) accented characters replaced
+        """
+        s = unidecode(content, "utf-8")
+        return unidecode(s)
+
+
+    def _clean(self, content: str):
+        """
+        Handles the cleaning of strings by replacing accented characters, stripping html, 
+
+        Args:
+            content (str): Content that needs to be cleaned
+
+        Returns:
+            str: Cleaned string
+        """
+        unaccented_content = self._remove_accents(content)
+        clean_content = self._html_strip(unaccented_content)
+        return clean_content
+
+
+    def _parse_rdf(self, tree: ET.ElementTree, root: ET.Element):
+        """
+        Provides the information needed by the _parse_feed() method to succesfully parse a RDF feed
+
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+
+        Returns:
+            Feed: A feed instance containing all parsed data
+        """
+        RDF_NS = {
+            'xmlns': 'http://purl.org/rss/1.0/',
+            'xmlns:rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+            'xmlns_dc': 'http://purl.org/dc/elements/1.1/',
+            'xmlns:sy': 'http://purl.org/rss/modules/syndication/',
+            'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
+            'xmlns:dwsyn': 'http://rss.dw.com/syndication/dwsyn/'
+        }
+        PATH_OPTIONS_RDF = {
+            'title': ['xmlns:title', 'xmlns:channel/xmlns:title'],
+            'language': ['xmlns:language', 'xmlns:channel/xmlns:language'],
+            'items': ['xmlns:item'],
+            'item_title': ['xmlns:title'],
+            'item_description': ['xmlns:description']
+        }
+
+        return self._parse_feed(tree, root, PATH_OPTIONS_RDF, RDF_NS)
+
+
+    def _parse_rss(self, tree: ET.ElementTree, root: ET.Element):
+        """
+        Provides the information needed by the _parse_feed() method to succesfully parse a RSS feed
+
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+
+        Returns:
+            Feed: A feed instance containing all parsed data
+        """
+        PATH_OPTIONS_RSS = {
+            'title': ['title', 'channel/title'],
+            'language': ['language', 'channel/language'],
+            'items': ['item', 'channel/item'],
+            'item_title': ['title'],
+            'item_description': ['description']
+        }
+
+        return self._parse_feed(tree, root, PATH_OPTIONS_RSS)
+
+
+    def _parse_feed(self, tree: ET.ElementTree, root: ET.Element, path_options: dict, ns: dict = {}):
+        """
+        Parses the feed provided it has the correct paths/ namespaces
+
+        Args:
+            tree (ET.ElementTree): The tree containing all information
+            root (ET.Element): The root item from whic to start working
+            path_options (dict): Path options that need to be checked in order to get to the good stuff that we want
+            ns (dict, optional): Namespaces needed for handling RDF feeds. Defaults to {}.
+
+        Returns:
+            Feed: A feed instances with all the parsed iniformation
+        """
+        for path in path_options['title']:
+            title = root.find(path, ns)
+            if title != None:
+                title = title.text
+                break
+
+        for path in path_options['language']:
+            language = root.find(path, ns)
+            if language != None:
+                language = language.text
+                break
+
+        for path in path_options['items']:
+            items = root.findall(path, ns)
+            if items != []:
+                break
+        feed = Feed(title, language)
+        for item in items:
+            for path in path_options['item_title']:
+                item_title = item.find(path, ns)
+                if item_title != None:
+                    item_title = item_title.text
+                    break
+            for path in path_options['item_description']:
+                item_description = item.find(path, ns)
+                if item_description != None:
+                    item_description = ''.join(
+                        item.find(path, ns).itertext()).strip()
+                    break
+            item_description = self._clean(item_description)
+            feed.add_item((item_title, item_description))
+
+        return feed
+
+
+    def _generate_feed(self, rss_url: str):
+        """
+        Parses a rss xml feed. Raises error the dictionary returned contains an empty title or items list. Retrieves feed name, language and title and description from all items. Returns them in a neat dictionary
+
+        Will only parse .xml file in rss feed structure as demonstrated here:
+        https://www.w3schools.com/XML/xml_rss.asp
+
+        Args:
+            rss_url (str): Url or path proided from which to parse an XML document
+
+        Raises:
+            Exception: The second exception raised is whenever the feed that is to be returned is incomplete therefore indicating either a parsing error or a broken feed.
+
+        Returns:
+            dict: Dictionary containing information regarding the feed and its items
+        """
+
+        if self._is_url(rss_url) is True:
+            content = requests.get(rss_url).content
+            tree = ET.ElementTree(ET.fromstring(content))
+        else:
+            print('wrong')
+            tree = ET.parse(rss_url)
+
+        root = tree.getroot()
+
+        feed = dict()
+        if 'rdf' in root.tag.lower():
+            feed = self._parse_rdf(tree, root)
+        else:
+            # assuming that else the feed is a rss feed
+            feed = self._parse_rss(tree, root)
+
+        if feed.title is None or feed.items == []:
+            raise Exception(ERROR_PARSING)
+        return feed
+
+
+    @property
+    def named_entities(self):
+        """
+        Retrives named entities from all feed items that are stored within the NewsAggregator() instance
+
+        Returns:
+            set: All encountered named entities
+        """
+        named_entity_list = []
+        for feed in self._feeds:
+            for item in feed.items:
+
+                ne_set = self._ner.named_entities(item.content)
+                named_entity_list.append(ne_set)
+
+        common_entity_sets = self._ner.common_entity_sets(named_entity_list, minimum_set_length=2)
+
+        return common_entity_sets
+
+
+    def aggregate(self, file_path: str = DEFAULT_PATH):
+        """
+        Aggregates all feeds and saves them in list of feeeds. 
+
+        Args:
+            file_path (str): File path as to what file to turn into a set
+
+        Raises:
+            TypeError: Checks whether the provided argument is the correct type, namely a string
+        """
+        rss_url_set = self._file_to_set(file_path)
+        for rss_url in rss_url_set:
+            feed = self._generate_feed(rss_url)
+            self._feeds.append(feed)
+
+    def to_dict(self):
+        """
+        Returns a list containing a dictionary for each feeds and it's items
+
+        Returns:
+            list: A list filled with dictionaries
+        """
+        return [feed.to_dict() for feed in self._feeds]
+
+```
+</details>
+
+<details>
+<summary>Associated tests</summary>
+
+```
+import unittest
+import xml.etree.ElementTree as ET
+from modules.newsparser import *
+
+RSS_FEED = 'tests/test_files/test_parse_feed_rss.xml'
+RDF_FEED = 'tests/test_files/test_parse_feed_rdf.xml'
+CONTROL_RESULTS_DICT = {
+                            'title':'test',
+                            'language': 'en',
+                            'items':[
+                                {
+                                    'title': 'test_1',
+                                    'description':'summary of test',
+                                    'content': 'test_1. summary of test'
+                                },
+                                {
+                                    'title': 'test_2',
+                                    'description':'summary of test',
+                                    'content': 'test_2. summary of test'
+                                }
+                            ]
+                        }
+
+class TestNewsAggregator(unittest.TestCase):
+    
+
+    def test_file_to_set(self):
+        """
+        Checks whether the text_to_set functions properly, leaves out any whitespaces and #comments. Also checks whether the correct type is returned
+        """
+        
+        contol_results = {'https://test1.com','http://test2.org','www.test3.tech'}
+        test_results = NewsAggregator()._file_to_set('tests/test_files/test_file_to_set.txt')
+        
+        self.assertEqual(test_results, contol_results)
+        self.assertIsInstance(test_results, set)
+        with self.assertRaises(FileNotFoundError):
+            NewsAggregator()._file_to_set('app/non_existant_file.txt')
+            
+        for obj_type in [123,['1'],1.0,{"1", 1}, {'title':'something'},(1,0)]:
+            with self.assertRaises(TypeError):
+                NewsAggregator()._file_to_set(obj_type)
+
+
+    def test_parse_feed(self):
+        """
+        Checks whether feeds are parsed correctly and raise errors when needed
+        """
+        rss_feed = NewsAggregator()._generate_feed(RSS_FEED)
+        rdf_feed = NewsAggregator()._generate_feed(RDF_FEED)
+        rss_test_results = rss_feed.to_dict()
+        rdf_test_results = rdf_feed.to_dict()
+    
+        self.assertEqual(rss_test_results, CONTROL_RESULTS_DICT)
+        self.assertEqual(rdf_test_results, CONTROL_RESULTS_DICT)
+        self.assertIsInstance(rss_test_results, dict)
+        
+        with self.assertRaises(FileNotFoundError):
+            NewsAggregator()._generate_feed('app/not_existing.xml')
+        
+        with self.assertRaises(Exception):
+            NewsAggregator()._generate_feed('tests/test_files/test_parse_feed_unsuccesful.xml')
+            
+    
+    def test_html_strip(self):
+        
+        test_results = NewsAggregator()._html_strip('hello how<a href="https//:example.net"> are you</a>')
+        control_results = 'hello how are you'
+        
+        self.assertEqual(test_results, control_results)
+    
+    
+    def test_is_url(self):
+        test_result_1 = NewsAggregator()._is_url('hhhhttps woops//:')
+        test_result_2 = NewsAggregator()._is_url('https://example.net')
+        
+        self.assertEqual(test_result_1, False)
+        self.assertEqual(test_result_2, True)
+    
+
+    def test_parse_rss(self):
+        
+        rss_tree = ET.parse(RSS_FEED)
+        rss_root = rss_tree.getroot()
+        rss_feed = NewsAggregator()._parse_rss(rss_tree, rss_root)
+        test_result = rss_feed.to_dict()
+        
+        self.assertEqual(test_result, CONTROL_RESULTS_DICT)
+        self.assertIsInstance(rss_feed, Feed)
+        
+
+    def test_parse_rdf(self):
+        
+        rdf_tree = ET.parse(RDF_FEED)
+        rdf_root = rdf_tree.getroot()
+        rdf_feed = NewsAggregator()._parse_rdf(rdf_tree, rdf_root)
+        test_result = rdf_feed.to_dict()
+        
+        self.assertEqual(test_result, CONTROL_RESULTS_DICT)
+        self.assertIsInstance(rdf_feed, Feed)
+        
+    
+    def test_parse_feed(self):
+        
+        path_options = {
+            'title':['title','channel/title'],
+            'language':['language', 'channel/language'],
+            'items':['item', 'channel/item'],
+            'item_title':['title'],
+            'item_description':['description']
+        }
+        rss_tree = ET.parse(RSS_FEED)
+        rss_root = rss_tree.getroot()
+        rss_feed = NewsAggregator()._parse_feed(rss_tree, rss_root, path_options)
+        test_result = rss_feed.to_dict()
+        
+        self.assertIsInstance(rss_feed, Feed)
+        self.assertEqual(test_result, CONTROL_RESULTS_DICT)
+        
+    
+    def test_aggregate(self):
+        pass
+
+```
+
+</details>
+
+However, only switching if I get all the other feeds working too ofcourse... Need to check this ASAP

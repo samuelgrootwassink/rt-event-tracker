@@ -1,0 +1,132 @@
+Date: 2023-03-18 14:48:18.518515, Sample size: 3,
+Sources: ['\n China Daily > China News \n', 'Al Jazeera – Breaking News, World News and Video from Al Jazeera', 'News – The Guardian Nigeria News – Nigeria and World News', 'The Moscow Times - Independent News From Russia', ' | The Hindu', 'Europe : Latest news on Le Monde.fr.', 'The Guardian', 'Deutsche Welle', 'Asia - South China Morning Post', 'Sydney Morning Herald - National', 'NYT > World News', 'News', 'BBC News - World']
+
+
+Israel says it demolishes tunnel from Gaza into Israel
+
+. 
+frozenset({'Gaza Israel', 'Israel'})
+
+
+ Chinese, Russian and Indian ministers meet 
+. China, Russia and India agreed to maintain regional security and economic architecture in the Asia-Pacific, according to a joint statement issued on Monday after the 15th trilateral meeting of the foreign ministers of the three countries.
+frozenset({'Russian', 'Russia', 'Asia', 'China', 'Chinese'})
+
+
+
+Young Chinese-Irish ballroom dancer goes international
+
+. Kerry Sui, a 10-year-old Chinese-Irish dancer, and her dance partner Francis Carty are set to compete in Italy and perform on Chinese TV after winning the British juvenile ballroom championship.
+frozenset({'Italy', 'British', 'Young', 'Francis Carty', 'Kerry', 'Irish', 'Chinese Irish', 'Chinese'})
+
+N Korea says 800,000 youths volunteer to fight ‘US imperialists’. North Korean state media says the mass enlistment is in response to military drills between the US and South Korea.
+frozenset({'North', 'US South Korea', 'Korean', 'US'})
+
+US Biden says war crimes charge against Russia’s Putin justified. Moscow says ICC charges against Vladimir Putin are meaningless with respect to jurisdiction in Russia.
+frozenset({'Moscow', 'Russia', 'Putin', 'Biden', 'ICC', 'Vladimir Putin', 'US'})
+
+The woman who could be Nigeria’s first elected female governor. Aishatu Dahiru is seeking to make history as Nigeria s first elected female governor, in Saturday s election.
+frozenset({'Aishatu', 'Nigeria'})
+
+Low turnout, vote buying mar election in Cross River. There were general voter aparthy, and vote buying in the ongoing 2023 Governorship and State House Assembly elections in most of the polling units visited in Calabar metropolis in Cross River State. The Guardian observed that the exercise in Calabar, reports that the Independent National Electoral Commission (INEC) adhoc staff and the security operatives resumed [ ] 
+ The post Low turnout, vote buying mar election in Cross River appeared first on The Guardian Nigeria News - Nigeria and World News .
+frozenset({'Calabar', 'House Assembly', 'Cross River', 'Low', 'Guardian', 'Guardian Nigeria News Nigeria'})
+
+Gov Emmanuel votes, expresses confidence in INEC. March 18, 2023 (NAN) Gov. Udom Emmanuel of Akwa Ibom voted on Saturday in Awa ward 1 Unit 1, Onna Local Government Area (LGA) of the State. 
+ The post Gov Emmanuel votes, expresses confidence in INEC appeared first on The Guardian Nigeria News - Nigeria and World News .
+frozenset({'INEC', 'Emmanuel Akwa Ibom', 'NAN', 'Udom', 'Guardian Nigeria News Nigeria'})
+
+INEC denies plans to conduct supplementary presidential election. The Independent National Electoral Commission (INEC) has debunked reports that the Commission plans to conduct supplementary elections arising from the presidential and National Assembly elections. INEC also denied planning to hold supplementary elections for Saturday's Governorship and State Assembly elections. National Commissioner and Chairman, Information and Voter Education Committee, Festus Okoye, said this in a [ ] 
+ The post INEC denies plans to conduct supplementary presidential election appeared first on The Guardian Nigeria News - Nigeria and World News .
+frozenset({'INEC', 'Okoye', 'National Electoral Commission', 'Guardian Nigeria News Nigeria', 'Commissioner', 'Commission', 'National Assembly', 'National'})
+
+Poland 'Dismantles' Russian Spy Ring. "The threat was real," Defense Minister Mariusz Blaszczak said.
+frozenset({'Poland', 'Dismantles Russian Spy', 'Mariusz Blaszczak'})
+
+National Park Partially Closes After Viral Investigation Into Putin's Mansion. The protected zone expansion includes the area that hosts luxury property allegedly owned by Putin and his alleged girlfriend.
+frozenset({'Putin Mansion', 'Putin', 'National Park Partially Closes Viral'})
+
+Russia Says It Is Not a Threat to Finland. Turkey is expected to approve Helsinki's NATO bid, which it put forward after Russia's invasion of Ukraine.
+frozenset({'Russia', 'Ukraine', 'NATO', 'Turkey', 'Says Threat Finland', 'Helsinki'})
+
+New COVID-19 origins data point to raccoon dogs in China market. Wuhan is home to several labs involved in collecting and studying coronaviruses
+frozenset({'New', 'China', 'Wuhan'})
+
+India’s K.R. Parvathy appointed as UN Resident Coordinator in Tajikistan. Prior to her appointment as United Nations Resident Coordinator, Parvathy served as Representative and Country Director for the United Nations World Food Programme (WFP) in Turkey.
+frozenset({'UN', 'Turkey', 'Parvathy', 'United Nations', 'Country', 'India', 'Prior'})
+
+Big banks create $30bn rescue package for First Republic. "This show of support by a group of large banks is most welcome, and demonstrates the resilience of the banking system," said the U.S. Treasury Secretary Janet Yellen.
+frozenset({'First Republic', 'Janet Yellen', 'U Treasury'})
+
+Poland will be the first NATO country to deliver fighter jets to Ukraine. Warsaw has promised to send four MiG-29 fighter bombers to Kyiv in the next few days. It could be followed, at first, by Central and Eastern European countries.
+frozenset({'Warsaw', 'Ukraine', 'Poland', 'Central Eastern European', 'NATO'})
+
+Sweden lowers its targets for development aid. Under pressure from the far-right and conservatives, the government is breaking with the goals set 60 years ago, causing confusion and concern among NGOs who are seeing their budgets shrink.
+frozenset({'NGOs', 'Sweden'})
+
+After Poland, Slovakia to give Ukraine Soviet-era MiG-29 jets. The central European country becomes the second NATO member country to bolster Ukraine's existing MiG-29 fleet with its 13 planes, following Zelensky's pleas.
+frozenset({'Slovakia', 'MiG', 'Zelensky', 'Ukraine Soviet', 'European', 'Ukraine', 'Poland', 'NATO'})
+
+ICC judges issue arrest warrant for Vladimir Putin over alleged war crimes. Arrest warrants issued for Russian leader and his children's rights commissioner for 'unlawful deportation' of Ukrainian children  Who are the children being taken by Russia?  The international criminal court (ICC) in The Hague has issued an arrest warrant for Vladimir Putin for overseeing the abduction of Ukrainian children, sending Russia another significant step on the path to becoming a pariah state. In granting the request for warrants by the ICC prosecutor, a panel of judges agreed that there were "reasonable grounds" to believe Putin and his children's rights commissioner, Maria Alekseyevna Lvova-Belova, bore responsibility for the "unlawful deportation" of Ukrainian children.  Continue reading...
+frozenset({'Vladimir Putin', 'Arrest', 'Russian', 'Russia', 'Putin', 'ICC', 'ICC Hague', 'Ukrainian', 'Maria Alekseyevna Lvova Belova'})
+
+Sam Neill: Jurassic Park actor reveals he is being treated for stage-three blood cancer. Exclusive: Neill underwent chemotherapy after being diagnosed with angioimmunoblastic T-cell lymphoma  Sam Neill on his new memoir and living with blood cancer: 'I'm not afraid to die, but it would annoy me'  The actor Sam Neill has revealed that he is being treated for stage-three blood cancer in a candid memoir to be released on Tuesday.  In an interview with the Guardian about his book , Did I Ever Tell You This?, the 75-year-old Jurassic Park star discusses his career in film and television, the nature of celebrity, life on his New Zealand farm, and mortality, having opened his book with a shock. Read the full interview with Sam Neill here  Continue reading...
+frozenset({'Jurassic Park', 'Exclusive', 'Sam', 'Sam Neill', 'Read', 'Neill Jurassic Park', 'Sam Neill Continue', 'Guardian', 'Neill', 'New Zealand'})
+
+Biden administration quietly resumes deportations to Russia. Exclusive: Apparent reversal of position adopted after invasion of Ukraine sends men fleeing Putin's draft back to Russia The Biden administration has quietly resumed deportations to Russia , an apparent reversal of the position adopted after Russia invaded Ukraine just over a year ago, when such removals were suspended, the Guardian has learned. Immigration advocates were taken by surprise when a young Russian man, who came to the US fleeing Vladimir Putin's efforts to mobilize citizens to fight in Ukraine, was abruptly deported at the weekend from the US back to Russia.  Continue reading...
+frozenset({'Vladimir Putin', 'Russian', 'Russia', 'Ukraine', 'Putin', 'Biden', 'Immigration', 'Guardian', 'US'})
+
+Credit Suisse to borrow $54 billion from Swiss central bank. The move to borrow from the Swiss National Bank makes Credit Suisse the first major global bank to be extended such a lifeline since the 2008 global financial crisis.
+frozenset({'Swiss National Bank', 'Swiss', 'Credit Suisse'})
+
+International Women's Day: Iranian women filmmakers in the resistance. Iranian women filmmakers struggle under violence and oppression. Their films show the truth about the lives of women in the country.
+frozenset({'Iranian', 'International Women'})
+
+Deforestation Inc.: How 'green' firms prevent climate action. A new 9-month long cross-border investigation exposes the flaws of "green" forestry labels. Environmental auditors overlook harm by "sustainable" companies, hindering climate efforts.
+frozenset({'Environmental'})
+
+Singapore says TikTok use on government devices only on ‘need-to basis’. Public officers are reminded to download only approved apps on their work devices, government spokesperson says.
+frozenset({'Singapore', 'TikTok', 'Public'})
+
+Taiwan must consider ‘very influential’ businesses in US trade talks as Washington seeks to ‘cut red tape’. Taiwan and the US began talks last year over the US-Taiwan Initiative on 21st-Century Trade, and on Thursday, Washington proposed a trade deal text to streamline border procedures and 'cut red tape' for shipments of goods.
+frozenset({'Century Trade', 'Washington', 'US Taiwan', 'Taiwan', 'US'})
+
+Indonesia football tragedy: victims’ families outraged after court acquits police officers. Two officers found not guilty on charges of negligence leading to injury and death, while a third officer was sentenced to 18 months in jail.
+frozenset({'Indonesia'})
+
+Perth’s Port to Pub swim back with a bang as hundreds take to the water. The Port to Pub president said this year the event had come back stronger than ever, after it was cancelled in 2022 due to COVID.
+frozenset({'Port Pub', 'Perth', 'Pub', 'COVID', 'Port'})
+
+Missing elderly man from Manly found dead. The body of 81-year-old Richard Gottschald, who had been missing since Tuesday, was found in waters off Manly Beach on Saturday.
+frozenset({'Beach', 'Richard Gottschald', 'Manly'})
+
+Bushfires burn through Victoria. Dozens of bushfires are burning in Victoria after the hottest March day in 16 years.
+frozenset({'Victoria', 'Dozens'})
+
+Dutch Pro-Farmer Party Sweeps Elections, Upsetting the Status Quo. The surprise victory is widely seen as a protest vote against Prime Minister Mark Rutte's government and some of his policies, including a goal to slash nitrogen emissions, which many say will imperil farming operations.
+frozenset({'Mark Rutte', 'Dutch', 'Pro Farmer Party Sweeps Elections'})
+
+Justice Dept. Investigating TikTok’s Owner Over Possible Spying on Journalists. The inquiry appears to be tied to an admission by the app's owner, ByteDance, that employees had inappropriately obtained Americans' data. The company said it had fired the workers involved.
+frozenset({'TikTok Owner Possible', 'ByteDance'})
+
+3 Dogs Die After Eating Poisoned Meatballs at a Race in France. The poisonings took place at the French canicross championships, in which people run or cycle while attached to their dogs.
+frozenset({'French'})
+
+Millions of dead fish clog Australian river. Millions of dead and rotting fish have clogged a vast stretch of river near a remote town in the Australian outback as a searing heatwave sweeps through the region.Videos posted to social media showed boats ploughing through a blanket of dead fish smothering the water, with the surface barely visible underneath.For all the latest headlines follow our Google News channel online or via the app.The New South Wales government said on Friday that "millions" of fish had died in the Darling River near the small town of Menindee, in the third mass kill to hit the area since 2018."It's horrific really, there's dead fish as far as you can see," Menindee local Graeme McCrabb told AFP."It's surreal to comprehend," he said, adding this year's fish kill appeared to be worse than previous ones."The environmental impact is unfathomable."Populations of fish such as bony herring and carp had boomed in the river following recent floods, according to the state government, but were now dying off in huge
+frozenset({'Menindee', 'AFP', 'New South Wales', 'Graeme McCrabb', 'Australian', 'Darling River', 'Videos', 'Google News'})
+
+Turkey’s Erdogan and Egypt’s Sisi to meet: FM. Turkey's top diplomat said Saturday President Recep Tayyip Erdogan and Egyptian President Abdel Fattah al-Sisi would meet to mark the end of a decade of estrangement between the two countries.Turkish Foreign Minister Mevlut Cavusoglu, speaking alongside his Egyptian counterpart Sameh Shoukry during a visit to Cairo, said Ankara wanted "to restore diplomatic relations between the two countries at the highest level."Cavusoglu s visit follows a trip last month by Shoukry to Turkey in a show of solidarity after the devastating earthquake that claimed tens of thousands of lives in Turkey and neighboring Syria.For all the latest headlines follow our Google News channel online or via the app."It is possible that we will disagree in the future, but we will do everything to avoid breaking our relations again," Cavusoglu said.Relations ran into trouble after the 2013 ouster of Egypt's Islamist president Mohamed Morsi, an ally of Turkey.At the time, Erdogan said he would "never" speak to "anyone"
+frozenset({'Erdogan Egypt Sisi', 'Turkey', 'Cairo', 'Erdogan', 'Ankara', 'Egyptian', 'Sisi', 'Google News', 'Cavusoglu', 'Syria', 'Shoukry Turkey', 'Relations', 'Egypt Islamist', 'Turkish', 'Abdel Fattah', 'Sameh Shoukry', 'Recep Tayyip Erdogan Egyptian', 'Mevlut Cavusoglu', 'Mohamed Morsi'})
+
+UN aviation council votes to hear MH17 case against Russia. The United Nations aviation council on Friday voted to hear a case against Russia over the 2014 downing of Malaysia Airlines Flight MH17, the foreign ministers of Australia and the Netherlands said.Australia and the Netherlands initiated the action over MH17 last year at the International Civil Aviation Organization (ICAO). The passenger jet was struck over rebel-held eastern Ukraine by what international investigators and prosecutors say was a Russian-made surface-to-air missile, killing all 298 people on board.For all the latest headlines follow our Google News channel online or via the app.Australia has said Russia was responsible under international law and that taking the matter to ICAO would be a step forward in the fight for victims who included 38 Australians.The ICAO upheld its jurisdiction to hear the matter during a session on Friday, Australian Foreign Minister Penny Wong said in a written statement."This decision is an important step in our collective efforts to hold to
+frozenset({'Malaysia', 'ICAO', 'Russian', 'Penny Wong', 'Russia', 'Ukraine', 'Nations', 'Airlines Flight', 'Australia Netherlands', 'Australia', 'Australian', 'International Civil Aviation Organization', 'Google News', 'United', 'MH17'})
+
+Menindee: Millions of dead fish wash up near Australian town. "Just imagine leaving a fish in your kitchen to rot" said one resident, describing the smell.
+frozenset({'Menindee', 'Australian', 'Millions'})
+
+Russia Ukraine invasion: Indians are braving war to study in Ukraine. More than 1,000 students have returned to finish degrees after fleeing fighting a year ago.
+frozenset({'Russia', 'Ukraine'})
+
+Quiz of the week: What is causing a pong in Paris. How closely have you been paying attention to what's been going on over the past seven days?
+frozenset({'Quiz', 'Paris'})
+

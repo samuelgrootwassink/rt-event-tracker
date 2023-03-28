@@ -1,5 +1,5 @@
 from modules.newsparser import NewsAggregator
-from modules.ner import NER
+from modules.nlp import NER
 from random import randint, sample
 from datetime import datetime
 
@@ -39,11 +39,11 @@ class SampleData():
         
         with open(f'samples/sample-common-entity-sets-{datetime.now()}.txt','x') as f:
             f.write(f'Date: {datetime.now()}\nSources: {self._sources}\nWeight Treshold: {treshold}\n\n')
-            for ne_set, weight in self._common_entity_types.items():
+            for ne_set, weight in sorted(self._common_entity_types.items(), key=lambda key:key[-1]):
                 if weight < treshold:
                     continue
-                ne_set = str(ne_set)
+                ne_set = str(ne_set).replace('frozenset', ' ')
                 weight = str(weight)
-                f.write(weight + '>>')
+                f.write(weight + ' >> ')
                 f.write(ne_set + '\n\n')
         

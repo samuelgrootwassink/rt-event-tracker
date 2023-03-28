@@ -130,3 +130,6 @@ dmypy.json
 
 #NLTK
 NLTK_DATA
+
+#Twitter Bearer Token
+app/modules/files/twitter_bearer_token.txt
